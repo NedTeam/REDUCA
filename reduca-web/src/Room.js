@@ -5,6 +5,8 @@ import React, {
   useCallback,
 } from 'react';
 
+import { Link } from 'react-router-dom';
+
 const servers = {iceServers: [
   {urls: 'stun:stun.services.mozilla.com'},
   {urls: 'stun:stun.l.google.com:19302'},
@@ -81,6 +83,7 @@ export default ({
   }, [pc, db, sendMessage]);
   return (
     <div>
+      <Link to='/home'>Back</Link>
       <video autoplay muted ref={video1}/>
       <video autoplay ref={video2}/>
       <button onClick={showFriendsFace}>Conectar</button>

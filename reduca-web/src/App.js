@@ -75,52 +75,50 @@ const App = () => {
 
   return (
     <div>
-      <h2>LOGIN</h2>
-      <form onSubmit={handleLogin}>
-        <label>
-          User:
-          <input
-            type="text"
-            value={mail}
-            onChange={e => setMail(e.target.value)}
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type="text"
-            value={pass}
-            onChange={e => setPass(e.target.value)}
-          />
-        </label>
-        <input type="submit" value="Enviar" />
-      </form>
-      <h2>SIGN UP AS A NEW USER</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          User:
-          <input
-            type="text"
-            value={newMail}
-            onChange={e => setNewMail(e.target.value)}
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type="text"
-            value={newPass}
-            onChange={e => setNewPass(e.target.value)}
-          />
-        </label>
-        <input type="submit" value="Enviar" />
-      </form>
-      <h2>Current User:</h2>
       <div id="currentUser">{login}</div>
       <Router>
-	{login ? <Redirect to='/home'/> : (
+	{login ? <Redirect exact from='/' to='/home'/> : (
 	  <div>
-	    Login - Registro
+	    <h2>LOGIN</h2>
+	    <form onSubmit={handleLogin}>
+              <label>
+		User:
+		<input
+		  type="text"
+		  value={mail}
+		  onChange={e => setMail(e.target.value)}
+		/>
+              </label>
+              <label>
+		Password:
+		<input
+		  type="text"
+		  value={pass}
+		  onChange={e => setPass(e.target.value)}
+		/>
+              </label>
+              <input type="submit" value="Enviar" />
+	    </form>
+	    <h2>SIGN UP AS A NEW USER</h2>
+	    <form onSubmit={handleSubmit}>
+              <label>
+		User:
+		<input
+		  type="text"
+		  value={newMail}
+		  onChange={e => setNewMail(e.target.value)}
+		/>
+              </label>
+              <label>
+		Password:
+		<input
+		  type="text"
+		  value={newPass}
+		  onChange={e => setNewPass(e.target.value)}
+		/>
+              </label>
+              <input type="submit" value="Enviar" />
+	    </form>
 	  </div>
 	)}
 	<Route path="/home">
