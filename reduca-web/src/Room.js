@@ -6,6 +6,9 @@ import React, {
 } from 'react';
 
 import { Link, useParams } from 'react-router-dom';
+import Analysis from "./Analysis";
+import User from "./User";
+
 const servers = {iceServers: [
   {urls: 'stun:stun.services.mozilla.com'},
   {urls: 'stun:stun.l.google.com:19302'},
@@ -123,37 +126,10 @@ export default ({
       <div className="classGrid3">
 
         <div className="leftColumn">
-          <div style={{paddingBottom: '0.5em'}}>
-            <div style={{paddingBottom: "2vh", backgroundColor:'rgba(192,192,192,0.8)', padding: '0.4em', borderRadius:'1em'}}>
-              <i className="fa fa-search fa-xl" style={{color: 'black', fontSize: '1.5em', display: 'inline', paddingRight: '12vh', paddingLeft: '1vh'}}></i>
-              <i className="fa fa-search fa-xl" style={{color: 'black', fontSize: '1.5em', display: 'inline', paddingRight: '1vh'}}></i>
-              <i className="fa fa-search fa-xl" style={{color: 'black', fontSize: '1.5em', display: 'inline', paddingRight: '1vh'}}></i>
-            </div>
-          </div>
-
-          <div style={{paddingBottom: '0.5em'}}>
-            <div className="userGrid2 flexCenter" style={{backgroundColor:'rgba(192,192,192,0.8)', padding: '0.4em', borderRadius:'1em'}}>
-              <div style={{textAlign: 'center'}}>
-                <img className="avatarIcon" src={"https://widgetwhats.com/app/uploads/2019/11/free-profile-photo-whatsapp-4.png"}/>
-                </div>
-              <div>
-                <p style={{paddingLeft: '0.5em', lineHeight: '50%', fontSize: '1.2em'}}><b>John Doe</b></p>
-                <p style={{paddingLeft: '1em', lineHeight: '80%', color:'#181818'}}>Status</p>
-              </div>
-            </div>
-          </div>
-          
-          <div style={{paddingBottom: '0.5em'}}>
-            <div className="userGrid2 flexCenter" style={{backgroundColor:'rgba(192,192,192,0.8)', padding: '0.4em', borderRadius:'1em'}}>
-              <div style={{textAlign: 'center'}}>
-                <img className="avatarIcon" src={"https://widgetwhats.com/app/uploads/2019/11/free-profile-photo-whatsapp-4.png"}/>
-              </div>
-              <div>
-                <p style={{paddingLeft: '0.5em', lineHeight: '50%', fontSize: '1.2em'}}><b>John Doe</b></p>
-                <p style={{paddingLeft: '1em', lineHeight: '80%', color:'#181818'}}>Status</p>
-              </div>
-            </div>
-          </div>
+          <Analysis></Analysis>
+          <User name="Uriel" status="Conected"></User>
+          <User name="Marco" status="Playing csgo"></User>
+          <User name="Javier" status="Conected"></User>
         </div>
 
         <div className="centerColumn" style={{width:'100%'}}>
@@ -218,8 +194,8 @@ export default ({
           </div>
            
           <div id="videos">
-            <video style={{ border: '1px solid black', width: '14rem', height: '10.6rem'}} autoplay muted ref={video1}/>
-            <video style={{ border: '1px solid black', width: '14rem', height: '10.6rem'}} autoplay ref={video2}/>
+            <video style={{ border: '1px solid black', width: '100%', height: '10.6rem'}} autoplay muted ref={video1}/>
+            <video style={{ border: '1px solid black', width: '100%', height: '10.6rem'}} autoplay ref={video2}/>
           </div>
         </div>
       </div>
