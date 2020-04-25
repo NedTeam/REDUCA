@@ -142,7 +142,7 @@ export default ({
               </div>
             </div>
           </div>
-
+          
           <div style={{paddingBottom: '0.5em'}}>
             <div className="userGrid2 flexCenter" style={{backgroundColor:'rgba(192,192,192,0.8)', padding: '0.4em', borderRadius:'1em'}}>
               <div style={{textAlign: 'center'}}>
@@ -216,10 +216,10 @@ export default ({
               </div>
             </div>
           </div>
-
+           
           <div id="videos">
-            <video style={{ border: '1px solid black', width: '100%', height: '100%'}} autoplay muted ref={video1}/>
-            <video style={{ border: '1px solid black', width: '100%', height: '100%'}} autoplay ref={video2}/>
+            <video style={{ border: '1px solid black', width: '14rem', height: '10.6rem'}} autoplay muted ref={video1}/>
+            <video style={{ border: '1px solid black', width: '14rem', height: '10.6rem'}} autoplay ref={video2}/>
           </div>
         </div>
       </div>
