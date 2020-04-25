@@ -22,7 +22,8 @@ const App = () => {
   const [pass, setPass] = useState();
   const [login, setLogin] = useState();
   const [db, setDb] = useState();
-
+  const [functions, setFunctions] = useState();
+  
   useEffect(() => {
     const firebaseConfig = {
       apiKey: "AIzaSyBy7thcdptlNFSW0IqfJ7OI6SBtmpkZ_OU",
@@ -36,7 +37,9 @@ const App = () => {
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+    const functions = firebase.functions();
     setDb(db);
+    setFunctions(functions);
     //authentication state observer
     firebase.auth().onAuthStateChanged(function(u) {
       if (u) {
@@ -124,7 +127,12 @@ const App = () => {
             </div>
           )}
           <Route path="/home">
-            <HomePage user={login} setUser={setLogin} db={db} />
+            <HomePage
+	      user={login}
+	      setUser={setLogin}
+	      db={db}
+	      functions={functions}
+	    />
           </Route>
 	</Switch>
       </Router>

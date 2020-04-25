@@ -5,7 +5,7 @@ import firebase from "firebase";
 
 import { Switch, Route, Link } from "react-router-dom";
 
-export default ({ db, user, setUser }) => {
+export default ({ db, user, setUser, functions }) => {
   const logout = () => {
     firebase
       .auth()
@@ -19,7 +19,7 @@ export default ({ db, user, setUser }) => {
     <div>
       <Switch>
         <Route exact path="/home">
-          <RoomList db={db} user={user} />
+          <RoomList db={db} user={user} functions={functions}/>
           <div>
             <Link to="/" onClick={logout}>
               Log out
@@ -27,7 +27,7 @@ export default ({ db, user, setUser }) => {
           </div>
         </Route>
         <Route path="/home/room/:room_id">
-          <Room db={db} user={user} />
+          <Room db={db} user={user} functions={functions}/>
         </Route>
       </Switch>
     </div>
