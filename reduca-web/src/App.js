@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import firebase from "firebase";
+import Room from './Room';
 import "firebase/auth";
 import "firebase/firestore";
 import "./App.css";
@@ -12,7 +13,8 @@ const App = () => {
   const [mail, setMail] = useState();
   const [pass, setPass] = useState();
   const [login, setLogin] = useState();
-
+  const [db, setDb] = useState();
+    
   useEffect(() => {
     const firebaseConfig = {
       apiKey: "AIzaSyBy7thcdptlNFSW0IqfJ7OI6SBtmpkZ_OU",
@@ -26,10 +28,7 @@ const App = () => {
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-    db.collection("users")
-      .doc("PUp3fvntRc0TPsjEjSov")
-      .onSnapshot(u => u && setUser(u.data()));
-
+    setDb(db);
     //authentication state observer
     firebase.auth().onAuthStateChanged(function(u) {
       if (u) {
@@ -108,19 +107,9 @@ const App = () => {
       </form>
       <h2>Current User:</h2>
       <div id="currentUser">{login}</div>
+	<Room db={db}/>
     </div>
   );
 };
 
 export default App;
-
-{
-  /* <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-	    Reduca {JSON.stringify(user)}
-        </p>
-      </header>
-    </div> */
-}
