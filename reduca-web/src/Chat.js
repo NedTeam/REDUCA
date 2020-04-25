@@ -7,7 +7,7 @@ const Chat = ({ db }) => {
     query.onSnapshot(
       querySnapshot => {
         querySnapshot.forEach(doc => {
-          let newMessages = [...messages, doc.data.message];
+          let newMessages = [...messages, doc.data().message];
           setMessages(newMessages);
         });
       },
