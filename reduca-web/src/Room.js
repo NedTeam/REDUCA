@@ -58,7 +58,7 @@ export default ({
     const msg = JSON.parse(data.message);
     const sender = data.sender;
     if (sender != id) {
-      if(msg.transcript){
+      if(msg.transcript != null){
 	setTranscript(msg.transcript);
       } else if (msg.ice != undefined)
 	pc.addIceCandidate(new RTCIceCandidate(msg.ice));
@@ -84,7 +84,14 @@ export default ({
     recognition.interimResults = true;
     recognition.start();
     recognition.onresult = function(event) {
-      sendMessage(id, JSON.stringify({transcript: Array.from(event.results).slice(-2).map(l => l[0].transcript).join('.\n')}))
+      const results = Array.from(event.results);
+      const last_final_line_index = results.map(l => l.isFinal).lastIndexOf(true);
+      const non_final_lines = results.slice(last_final_line_index);
+      const last_final_line = results[last_final_line_index];
+      const last_final_transcript = last_final_line && last_final_line[0] && last_final_line[0].transcript;
+      const last_transcript = results.slice(last_final_line_index+1).map(l => l && l[0] && l[0].transcript).join(' ');
+      const lines = [ last_final_transcript, last_transcript ];
+      sendMessage(id, JSON.stringify({transcript: lines.filter(f => f).join('.\n')}))
     }
     return navigator.mediaDevices.getUserMedia({audio:true, video:true})
       .then(stream => {
@@ -225,21 +232,21 @@ export default ({
                 justifyContent: 'center',
                 fontSize: '1.4em',
                 position: 'absolute',
-                bottom: 10,
+                bottom: '2em',
                 left: 0,
                 right: 0,
-                height: '2em',
               }}
             >
               <div style={{
                 backgroundColor: 'gray',
                 color: 'lightGray',
                 borderRadius: '10px',
-                padding: '0.5em',	     
+                padding: '0.5em',
+		width: '70vw',
               }}>
-		            {transcript}
-	            </div>
-	          </div>
+		{transcript.split('\n').map(line => <div>{line}</div>)}
+	      </div>
+	    </div>
           )}
       </div>
       

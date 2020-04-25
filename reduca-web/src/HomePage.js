@@ -2,6 +2,8 @@ import React from "react";
 import RoomList from "./RoomList";
 import Room from "./Room";
 import firebase from "firebase";
+import TextToSpeech from "./TextToSpeech";
+import Chat from "./Chat";
 
 import { Switch, Route, Link } from "react-router-dom";
 
@@ -19,15 +21,17 @@ export default ({ db, user, setUser, functions }) => {
     <div>
       <Switch>
         <Route exact path="/home">
-          <RoomList db={db} user={user} functions={functions}/>
+          <RoomList db={db} user={user} functions={functions} />
           <div>
+            <TextToSpeech />
+            <Chat db={db} />
             <Link to="/" onClick={logout}>
               Log out
             </Link>
           </div>
         </Route>
         <Route path="/home/room/:room_id">
-          <Room db={db} user={user} functions={functions}/>
+          <Room db={db} user={user} functions={functions} />
         </Route>
       </Switch>
     </div>
