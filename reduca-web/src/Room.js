@@ -14,6 +14,19 @@ const servers = {iceServers: [
   {urls: 'stun:stun.l.google.com:19302'},
 ]};
 
+const datosMedia = [
+  {
+    data: {
+      battery: 0.7,
+      design: .8,
+      useful: 0.9,
+      speed: 0.67,
+      weight: 0.8
+    },
+    meta: { color: 'blue' }
+  }
+];
+
 export default ({
   db,
   functions,
@@ -29,6 +42,7 @@ export default ({
   const [ id, setId ] = useState(Math.floor(Math.random()*1000000000));
   const [ transcript, setTranscript ] = useState('');
   const [ stream, setStream ] = useState();
+  const [ graph, setGraph ] = useState(datosMedia);
   const getSentiment = message => {
     console.log(functions);
     const fn = functions.httpsCallable('testml');
@@ -123,16 +137,73 @@ export default ({
       video2.current.play();
     });
   }, [pc, db, sendMessage]);
-  
+
+  const datosUsuario1 = [{
+    data: {
+    battery: .2,
+    design: .4,
+    useful: .1,
+    speed: .9,
+    weight: .3
+    },
+    meta: { 
+      color: 'red' 
+    }
+  }];  
+
+  const datosUsuario2 = [{
+    data: {
+    battery: .8,
+    design: .3,
+    useful: .5,
+    speed: .2,
+    weight: .1
+    },
+    meta: { 
+      color: 'green' 
+    }
+  }];  
+
+  const datosUsuario3 = [{
+    data: {
+    battery: .45,
+    design: .4,
+    useful: .6,
+    speed: .5,
+    weight: .9
+    },
+    meta: { 
+      color: 'yellow' 
+    }
+  }];  
+
   return (
     <div className="" style={{position: 'relative'}}>
       <div className="classGrid3">
 
         <div className="leftColumn">
-          <Analysis></Analysis>
-          <User name="Uriel" status="Conected"></User>
-          <User name="Marco" status="Playing csgo"></User>
-          <User name="Javier" status="Conected"></User>
+          <Analysis datosGraph={graph}></Analysis>
+          <User 
+            name="Uriel" 
+            status="Conected"
+            data={datosUsuario1}
+            onClick={setGraph}
+            onStudentClick={() => {setGraph(datosUsuario1)}}
+          ></User>
+          <User 
+            name="Marco" 
+            status="Conected"
+            data={datosUsuario1}
+            onClick={setGraph}
+            onStudentClick={() => {setGraph(datosUsuario2)}}
+          ></User>
+          <User 
+            name="Javier" 
+            status="Conected"
+            data={datosUsuario1}
+            onClick={setGraph}
+            onStudentClick={() => {setGraph(datosUsuario3)}}
+          ></User>
         </div>
 
         <div className="centerColumn" style={{width:'100%'}}>
