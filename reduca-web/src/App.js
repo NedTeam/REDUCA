@@ -15,7 +15,7 @@ import {
 } from "react-router-dom";
 
 const App = () => {
-  const [user, setUser] = useState();
+  const [loading, setLoading] = useState(true);
   const [newMail, setNewMail] = useState();
   const [newPass, setNewPass] = useState();
   const [mail, setMail] = useState();
@@ -41,7 +41,9 @@ const App = () => {
     firebase.auth().onAuthStateChanged(function(u) {
       if (u) {
         setLogin(u.email);
+	setLoading(false);
       } else {
+	setLoading(false);
         // No user is signed in.
       }
     });
@@ -75,55 +77,57 @@ const App = () => {
     <div>
       <div id="currentUser">{login}</div>
       <Router>
-        {login ? (
-          <Redirect exact from="/" to="/home" />
-        ) : (
-          <div>
-            <h2>LOGIN</h2>
-            <form onSubmit={handleLogin}>
-              <label>
-                User:
-                <input
-                  type="text"
-                  value={mail}
-                  onChange={e => setMail(e.target.value)}
-                />
-              </label>
-              <label>
-                Password:
-                <input
-                  type="text"
-                  value={pass}
-                  onChange={e => setPass(e.target.value)}
-                />
-              </label>
-              <input type="submit" value="Enviar" />
-            </form>
-            <h2>SIGN UP AS A NEW USER</h2>
-            <form onSubmit={handleSubmit}>
-              <label>
-                User:
-                <input
-                  type="text"
-                  value={newMail}
-                  onChange={e => setNewMail(e.target.value)}
-                />
-              </label>
-              <label>
-                Password:
-                <input
-                  type="text"
-                  value={newPass}
-                  onChange={e => setNewPass(e.target.value)}
-                />
-              </label>
-              <input type="submit" value="Enviar" />
-            </form>
-          </div>
-        )}
-        <Route path="/home">
-          <HomePage user={login} setUser={setLogin} db={db} />
-        </Route>
+	<Switch>
+          {!loading && login ? (
+            <Redirect exact from="/" to="/home" />
+          ) : (
+            <div>
+              <h2>LOGIN</h2>
+              <form onSubmit={handleLogin}>
+		<label>
+                  User:
+                  <input
+                    type="text"
+                    value={mail}
+                    onChange={e => setMail(e.target.value)}
+                  />
+		</label>
+		<label>
+                  Password:
+                  <input
+                    type="text"
+                    value={pass}
+                    onChange={e => setPass(e.target.value)}
+                  />
+		</label>
+		<input type="submit" value="Enviar" />
+              </form>
+              <h2>SIGN UP AS A NEW USER</h2>
+              <form onSubmit={handleSubmit}>
+		<label>
+                  User:
+                  <input
+                    type="text"
+                    value={newMail}
+                    onChange={e => setNewMail(e.target.value)}
+                  />
+		</label>
+		<label>
+                  Password:
+                  <input
+                    type="text"
+                    value={newPass}
+                    onChange={e => setNewPass(e.target.value)}
+                  />
+		</label>
+		<input type="submit" value="Enviar" />
+              </form>
+            </div>
+          )}
+          <Route path="/home">
+            <HomePage user={login} setUser={setLogin} db={db} />
+          </Route>
+	</Switch>
       </Router>
     </div>
   );
