@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 const Chat = ({ db }) => {
   const [messages, setMessages] = useState([]);
-  let query = db.collection("messages");
+  let query = useMemo(() => db.collection("chat"), [db]);
   useEffect(() => {
+    console.log("jflsdjf");
     query.onSnapshot(
       querySnapshot => {
         querySnapshot.forEach(doc => {
-          let newMessages = [...messages, doc.data().message];
-          setMessages(newMessages);
+          setMessages(prevMessages => {
+            return [...prevMessages, doc.data().text];
+          });
         });
       },
       err => {
         console.log(`Encountered error: ${err}`);
       }
     );
-  });
-  return <div>Mensajes: {messages}</div>;
+  }, [query]);
+  return <div>Messages:{messages}</div>;
 };
 
 export default Chat;
