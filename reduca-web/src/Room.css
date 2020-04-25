@@ -1,0 +1,71 @@
+.flexCenter {
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  flex-direction: column;
+}
+.flexCenterR {
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  flex-direction: row;
+}
+.leftColumn{
+  text-align: left;
+  padding: 2vh;
+  padding-left: 6vh;
+  padding-top: 3vh;
+}
+.rightColumn{
+  text-align: left;
+  padding: 2vh;
+  padding-right: 6vh;
+  padding-top: 3vh;
+}
+.classGrid3 {
+  display: grid;
+  grid-template-columns: 0.8fr 6fr 0.2fr;
+  grid-auto-rows: 6fr 1fr;
+  height: 100vh;
+}
+.barGrid3{
+  grid-column-start: 1;
+  grid-column-end: 4;
+  height: auto;
+}
+.userGrid2{
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-auto-rows: 1fr;
+  width: auto;
+}
+.avatarIcon{
+  height: 6vh;
+  border-radius: 100%;
+}
+@media screen and (max-width: 750px){
+  .classGrid3 {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: 1fr 1fr 1fr 1fr;
+  }
+  .barGrid3{
+    height: auto;
+    grid-column-start: 1;
+    grid-column-end: 1;
+  }
+  .flexCenterR {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    flex-direction: row;
+  }
+  .leftColumn{
+    text-align: left;
+    padding: 2vh;
+  }
+  .leftColumn{
+    text-align: left;
+    padding: 2vh;
+  }
+}

@@ -75,7 +75,6 @@ const App = () => {
 
   return (
     <div>
-      <div id="currentUser">{login}</div>
       <Router>
 	<Switch>
           {!loading && login ? (
