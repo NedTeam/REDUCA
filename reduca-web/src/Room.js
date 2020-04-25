@@ -27,16 +27,18 @@ export default ({
   const [ pc, setPc ] = useState();
   const [ id, setId ] = useState(Math.floor(Math.random()*1000000000));
   const [ transcript, setTranscript ] = useState('');
+  const [ stream, setStream ] = useState();
   const getSentiment = message => {
     console.log(functions);
     const fn = functions.httpsCallable('testml');
     fn(message).then(res => {debugger})
   }
   const sendMessage = useCallback((senderId, data) => {
-    db.collection("messages").add({ sender: senderId, message: data }).then(msg => {
+    const room_name = process.env.NODE_ENV.concat('_').concat(room_id)
+    db.collection(`messages-${room_name}`).add({ sender: senderId, message: data }).then(msg => {
       msg.delete();
     });
-  }, [ db ]);
+  }, [ db, room_id ]);
   const readMessage = data => {
     const msg = JSON.parse(data.message);
     const sender = data.sender;
@@ -72,6 +74,7 @@ export default ({
       .then(stream => {
 	video1.current.srcObject = stream
 	video1.current.play();
+	setStream(stream);
 	return stream;
       })
       .then(stream => {
@@ -84,6 +87,7 @@ export default ({
     pc.removeTrack(sender);
     video1.current.srcObject = null;
     recognition && recognition.stop();
+    stream && stream.getTracks().forEach(track => track.stop());
   }
   
   useEffect(() => {
