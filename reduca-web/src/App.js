@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import firebase from "firebase";
-import HomePage from './HomePage';
+import HomePage from "./HomePage";
 import "firebase/auth";
 import "firebase/firestore";
 import "./App.css";
@@ -14,8 +14,6 @@ import {
   Link
 } from "react-router-dom";
 
-
-
 const App = () => {
   const [user, setUser] = useState();
   const [newMail, setNewMail] = useState();
@@ -24,7 +22,7 @@ const App = () => {
   const [pass, setPass] = useState();
   const [login, setLogin] = useState();
   const [db, setDb] = useState();
-    
+
   useEffect(() => {
     const firebaseConfig = {
       apiKey: "AIzaSyBy7thcdptlNFSW0IqfJ7OI6SBtmpkZ_OU",
@@ -77,53 +75,55 @@ const App = () => {
     <div>
       <div id="currentUser">{login}</div>
       <Router>
-	{login ? <Redirect exact from='/' to='/home'/> : (
-	  <div>
-	    <h2>LOGIN</h2>
-	    <form onSubmit={handleLogin}>
+        {login ? (
+          <Redirect exact from="/" to="/home" />
+        ) : (
+          <div>
+            <h2>LOGIN</h2>
+            <form onSubmit={handleLogin}>
               <label>
-		User:
-		<input
-		  type="text"
-		  value={mail}
-		  onChange={e => setMail(e.target.value)}
-		/>
+                User:
+                <input
+                  type="text"
+                  value={mail}
+                  onChange={e => setMail(e.target.value)}
+                />
               </label>
               <label>
-		Password:
-		<input
-		  type="text"
-		  value={pass}
-		  onChange={e => setPass(e.target.value)}
-		/>
-              </label>
-              <input type="submit" value="Enviar" />
-	    </form>
-	    <h2>SIGN UP AS A NEW USER</h2>
-	    <form onSubmit={handleSubmit}>
-              <label>
-		User:
-		<input
-		  type="text"
-		  value={newMail}
-		  onChange={e => setNewMail(e.target.value)}
-		/>
-              </label>
-              <label>
-		Password:
-		<input
-		  type="text"
-		  value={newPass}
-		  onChange={e => setNewPass(e.target.value)}
-		/>
+                Password:
+                <input
+                  type="text"
+                  value={pass}
+                  onChange={e => setPass(e.target.value)}
+                />
               </label>
               <input type="submit" value="Enviar" />
-	    </form>
-	  </div>
-	)}
-	<Route path="/home">
-	  <HomePage user={login} db={db}/>
-	</Route>
+            </form>
+            <h2>SIGN UP AS A NEW USER</h2>
+            <form onSubmit={handleSubmit}>
+              <label>
+                User:
+                <input
+                  type="text"
+                  value={newMail}
+                  onChange={e => setNewMail(e.target.value)}
+                />
+              </label>
+              <label>
+                Password:
+                <input
+                  type="text"
+                  value={newPass}
+                  onChange={e => setNewPass(e.target.value)}
+                />
+              </label>
+              <input type="submit" value="Enviar" />
+            </form>
+          </div>
+        )}
+        <Route path="/home">
+          <HomePage user={login} setUser={setLogin} db={db} />
+        </Route>
       </Router>
     </div>
   );
