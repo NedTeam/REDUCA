@@ -77,6 +77,19 @@
   box-shadow: 2px 2px 10px #888888;
   height: 15em;
 }
+.inputLog{
+  width: 30vh;
+  padding: 1.2em;
+  background-color: #EFEFEF;
+  border-style: none;
+  border-radius: 1em;
+}
+.buttonLog{
+  width: 15vh;
+  padding: 1em;
+  border-style: none;
+  border-radius: 1em;
+}
 @media screen and (max-width: 750px){
   .classGrid3 {
     display: grid;
