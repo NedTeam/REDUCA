@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import firebase from "firebase";
-import Room from './Room';
+import HomePage from './HomePage';
 import "firebase/auth";
 import "firebase/firestore";
 import "./App.css";
+
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
+
 
 const App = () => {
   const [user, setUser] = useState();
@@ -107,7 +117,16 @@ const App = () => {
       </form>
       <h2>Current User:</h2>
       <div id="currentUser">{login}</div>
-	<Room db={db}/>
+      <Router>
+	{login ? <Redirect to='/home'/> : (
+	  <div>
+	    Login - Registro
+	  </div>
+	)}
+	<Route path="/home">
+	  <HomePage user={login} db={db}/>
+	</Route>
+      </Router>
     </div>
   );
 };
