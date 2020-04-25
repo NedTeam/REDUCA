@@ -3,6 +3,7 @@ import React, {
     useEffect,
 } from 'react';
 import logo from './logo.svg';
+import Room from './Room.js';
 import firebase from 'firebase';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -10,6 +11,7 @@ import './App.css';
 
 const App = () => {
     const [ user, setUser ] = useState();
+    const [ db, setDb ] = useState();
     useEffect(() => {
 	const firebaseConfig = {
 	    apiKey: "AIzaSyBy7thcdptlNFSW0IqfJ7OI6SBtmpkZ_OU",
@@ -23,15 +25,19 @@ const App = () => {
 
 	firebase.initializeApp(firebaseConfig);
 	const db = firebase.firestore();
-	db.collection("users").doc("PUp3fvntRc0TPsjEjSov").onSnapshot(u => u && setUser(u.data()));
+	setDb(db);
     }, []);
+    useEffect(() => {if(db) {
+	db.collection("users").doc("PUp3fvntRc0TPsjEjSov").onSnapshot(u => u && setUser(u.data()));
+    }}, [db]);
     return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
 	    Reduca {JSON.stringify(user)}
-        </p>
+	    <Room db={db}/>
+	</p>
       </header>
     </div>
   );
