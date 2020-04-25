@@ -67,9 +67,10 @@ export default ({
     setRecognition(recognition);
     recognition.lang = 'en-US';
     recognition.continuous = true;
+    recognition.interimResults = true;
     recognition.start();
     recognition.onresult = function(event) {
-      sendMessage(id, JSON.stringify({transcript: Array.from(event.results).slice(-1)[0][0].transcript}))
+      sendMessage(id, JSON.stringify({transcript: Array.from(event.results).slice(-2).map(l => l[0].transcript).join('.\n')}))
     }
     return navigator.mediaDevices.getUserMedia({audio:true, video:true})
       .then(stream => {
@@ -79,8 +80,10 @@ export default ({
 	return stream;
       })
       .then(stream => {
-	const track = stream.getVideoTracks()[0];
-	return pc.addTrack(track, stream)
+	const video_track = stream.getVideoTracks()[0];
+	pc.addTrack(video_track, stream);
+	const audio_track = stream.getAudioTracks()[0];
+	return pc.addTrack(audio_track, stream);
       });
   }
 
