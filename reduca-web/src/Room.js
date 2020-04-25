@@ -33,12 +33,12 @@ export default ({
     const fn = functions.httpsCallable('testml');
     fn(message).then(res => {debugger})
   }
+  const room_name = process.env.NODE_ENV.concat('_').concat(room_id)
   const sendMessage = useCallback((senderId, data) => {
-    const room_name = process.env.NODE_ENV.concat('_').concat(room_id)
     db.collection(`messages-${room_name}`).add({ sender: senderId, message: data }).then(msg => {
       msg.delete();
     });
-  }, [ db, room_id ]);
+  }, [ db, room_name ]);
   const readMessage = data => {
     const msg = JSON.parse(data.message);
     const sender = data.sender;
@@ -100,7 +100,7 @@ export default ({
   
   useEffect(() => {
     if(!db || !sendMessage || !pc) return
-    db.collection('messages').onSnapshot(snapshot => {
+    db.collection(room_name).onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
 	if(change.type === 'added'){
 	  const doc = change.doc.data();
