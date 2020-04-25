@@ -18,18 +18,14 @@
 .leftColumn{
   text-align: left;
   padding: 2vh;
-  padding-left: 6vh;
-  padding-top: 6vh;
 }
 .rightColumn{
   text-align: left;
   padding: 2vh;
-  padding-right: 6vh;
-  padding-top: 6vh;
 }
 .classGrid3 {
   display: grid;
-  grid-template-columns: 0.8fr 6fr 0.2fr;
+  grid-template-columns: 1.5fr 6fr 1.5fr;
   grid-auto-rows: 6fr 1fr;
   height: 100vh;
 }
