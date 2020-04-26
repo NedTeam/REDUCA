@@ -13,6 +13,8 @@ import TranscriptHistory from "./TranscriptHistory";
 import User from "./User";
 import Chat from "./Chat";
 
+const colors = ['red', 'green', 'blue'];
+
 const servers = {iceServers: [
   {urls: 'stun:stun.services.mozilla.com'},
   {urls: 'stun:stun.l.google.com:19302'},
@@ -132,21 +134,22 @@ export default ({
     )));
   }
   
-  const onPlay = async e => {
+  const onPlay = (who, ref) => async e => {
     await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
     await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
     await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
     await faceapi.nets.faceExpressionNet.loadFromUri('/models');
-    const video = video1.current;
+    const video = ref.current;
     const displaySize = { width: video.width, height: video.height };
     setInterval(async () => {
       const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
       if(detections.length){
 	const expressions = detections[0].expressions;
-	setUserData(prev_data => {
-	  const data = [{data: Object.assign({}, calculateNext(prev_data[0] && prev_data[0].data, expressions)), meta: {color: 'red'}}];
-	  return data
-	});
+	debugger;
+	setUserData(prev_data => ({
+	  ...prev_data,
+	  [who]: Object.assign({}, calculateNext(prev_data[who], expressions)),
+	}));
       }
     }, 100)
   };
@@ -212,7 +215,7 @@ export default ({
     <div className="" style={{position: 'relative'}}>
       <div className="classGrid3">
         <div className="leftColumn" style={{height: '95vh', display: 'flex', flexDirection: 'column'}}>
-          <Analysis datosGraph={user_data}></Analysis>
+          <Analysis datosGraph={Object.values(user_data).map((u,i) => ({data: u, meta: {color: colors[i]}}))}></Analysis>
 	  <div style={{overflow: 'auto'}}>
 	    {room_users.map(u => (
 	      <User 
@@ -307,8 +310,8 @@ export default ({
           </div>
            
           <div id="videos">
-            <video style={{ width: '100%'}} className='video' autoplay muted ref={video1} onPlay={onPlay}/>
-            <video style={{ width: '100%'}} className='video' autoplay ref={video2}/>
+            <video style={{ width: '100%'}} className='video' autoPlay muted ref={video1} onPlay={onPlay('own', video1)}/>
+            <video style={{ width: '100%'}} className='video' autoPlay ref={video2} onPlay={onPlay('other', video2)}/>
           </div>
 	        <Chat db={db} user={user} room_id={room_id} onDataLoad={setChatHistory}/>
         </div>
