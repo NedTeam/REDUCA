@@ -15,7 +15,7 @@ function download(filename, text) {
   document.body.removeChild(element);
 }
 
-export default ({ db, room_id }) => {
+export default ({ db, room_id, onDataLoad }) => {
   const [messages, setMessages] = useState([]);
   const [ new_message, setNewMessage ] = useState('');
   let query = useMemo(() => db.collection("transcripts").where('room_id', '==', room_id), [db, room_id]);
@@ -24,7 +24,9 @@ export default ({ db, room_id }) => {
       querySnapshot => {
 	let messages = []
         querySnapshot.forEach(doc => messages.push(doc.data()));
-	setMessages(messages.sort((m1, m2) => m1.timestamp - m2.timestamp));
+	const sorted = messages.sort((m1, m2) => m1.timestamp - m2.timestamp);
+	setMessages(sorted);
+	onDataLoad(sorted);
       },
       err => {
         console.log(`Encountered error: ${err}`);
