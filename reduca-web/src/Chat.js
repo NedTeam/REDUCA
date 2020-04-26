@@ -11,7 +11,7 @@ const Chat = ({ db, room_id }) => {
       querySnapshot => {
 	let messages = []
         querySnapshot.forEach(doc => messages.push(doc.data()));
-	setMessages(messages);
+	setMessages(messages.sort((m1, m2) => m1.timestamp - m2.timestamp));
       },
       err => {
         console.log(`Encountered error: ${err}`);
@@ -23,28 +23,34 @@ const Chat = ({ db, room_id }) => {
       sender: 'test',
       text: new_message ,
       room_id,
+      timestamp: new Date().getTime(),
     })
   }
   return (
-    <div>
+    <div id='chat'>
       <div>Chat:</div>
-      {messages.map((m,i) => (
-	<div
-	  key={i}
-	  style={{
-	    margin: '0.3em',
-	    display: 'flex',
-	    padding: '0.3em',
-	    border: '1px solid grey',
-	    borderRadius: '3px',
-	    alignItems: 'center',
-	    backgroundColor: 'lightgrey',
-	  }}>
-	  <span style={{flex: 1}}>{m.text}</span>
-	  <TextToSpeech text={m.text}/>
-	  {m.score && <Score score={m.score}/>}
-	</div>
-      ))}
+      <div id='mensajes' style={{
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'auto'}}>
+        {messages.map((m,i) => (
+        <div
+          key={i}
+          style={{
+            margin: '0.3em',
+            display: 'flex',
+            padding: '0.3em',
+            border: '1px solid grey',
+            borderRadius: '3px',
+            alignItems: 'center',
+            backgroundColor: 'lightgrey',
+          }}>
+          <span style={{flex: 1}}>{m.text}</span>
+          <TextToSpeech text={m.text}/>
+          {m.score != null && <Score score={m.score}/>}
+        </div>
+        ))}
+      </div>
       <div style={{display: 'flex', alignItems: 'center'}}>
 	<input
 	  type='text'

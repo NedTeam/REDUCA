@@ -22,6 +22,10 @@
 .rightColumn{
   text-align: left;
   padding: 2vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  box-sizing: border-box;
 }
 .classGrid3 {
   display: grid;
@@ -86,6 +90,18 @@
   border-style: none;
   border-radius: 1em;
 }
+
+#chat{
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+body,html {
+  margin: 0;
+  padding: 0;
+}
+
 @media screen and (max-width: 750px){
   .classGrid3 {
     display: grid;
