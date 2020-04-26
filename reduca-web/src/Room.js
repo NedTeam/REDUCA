@@ -50,11 +50,6 @@ export default ({
   const [ transcript, setTranscript ] = useState('Hello World');
   const [ stream, setStream ] = useState();
   const [ graph, setGraph ] = useState(datosMedia);
-  const getSentiment = message => {
-    console.log(functions);
-    const fn = functions.httpsCallable('testml');
-    fn(message).then(res => {debugger})
-  }
   const room_name = 'messages_'.concat(process.env.NODE_ENV).concat('_').concat(room_id)
   const sendMessage = useCallback((senderId, data) => {
     db.collection(room_name).add({ sender: senderId, message: data }).then(msg => {
@@ -233,7 +228,8 @@ export default ({
                 color: 'lightGray',
                 borderRadius: '10px',
                 padding: '0.5em',
-		width: '70vw',
+                width: '70vw',
+	        overflow: 'auto',
               }}>
 		<div style={{display: transcript_modal_opened ? 'block' : 'none'}}>
 		  <TranscriptHistory room_id={room_id} db={db} onDataLoad={setTranscriptHistory}/>
