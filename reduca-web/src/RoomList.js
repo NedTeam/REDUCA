@@ -72,6 +72,16 @@ export default ({ user, setUser, logout }) => {
           >
             Log out
           </button>
+          <p style={{ fontSize: 20 }}>
+            1. Join a lecture by clicking in one of the courses
+          </p>
+          <p style={{ fontSize: 20 }}>
+            2. Start recording with you camera by clicking in the camera icon
+          </p>
+          <p style={{ fontSize: 20 }}>
+            3. Click in the transcription bar at the bottom of the screen to
+            display the transcription history.
+          </p>
         </div>
         <div style={{ backgroundColor: "white" }}>
           <div className="flexCenter" style={{ paddingTop: "2vh" }}>
