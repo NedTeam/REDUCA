@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import TextToSpeech from "./TextToSpeech.js";
 import Score from "./Score.js";
 
+const getName = email => email.split('@')[0]
+
 const Chat = ({ db, room_id, user, onDataLoad }) => {
   const [messages, setMessages] = useState([]);
   const [new_message, setNewMessage] = useState("");
@@ -54,10 +56,10 @@ const Chat = ({ db, room_id, user, onDataLoad }) => {
           <div style={{
             margin: '0.3em',
             display: 'flex'}}>
-            <TextToSpeech text={m.text}/>
+	    <TextToSpeech text={m.text}/>
             {m.score != null && <Score score={m.score}/>}
           </div>
-          <span style={{flex: 1}}>{m.text}</span>
+          <span style={{flex: 1}}><b>{getName(m.user)}</b>: {m.text}</span>
         </div>
         ))}
       </div>
@@ -68,8 +70,8 @@ const Chat = ({ db, room_id, user, onDataLoad }) => {
 	  style={{flex: 1, padding: '0.4em', borderRadius: '3px', alignSelf: 'flex-end'}}
 	  onChange={e => setNewMessage(e.target.value)}
 	/>
-	<button className="enviar" disabled={!new_message} onClick={sendMessage}>
-	  Send
+	<button title='Send' className="enviar" disabled={!new_message} onClick={sendMessage}>
+	  <i className='fa fa-paper-plane'/>
 	</button>
       </div>
     </div>

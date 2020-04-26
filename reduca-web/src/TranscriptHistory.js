@@ -15,6 +15,8 @@ function download(filename, text) {
   document.body.removeChild(element);
 }
 
+const getName = email => email.split('@')[0]
+
 export default ({ db, room_id, onDataLoad }) => {
   const [ messages, setMessages ] = useState([]);
   const [ new_message, setNewMessage ] = useState('');
@@ -66,7 +68,7 @@ export default ({ db, room_id, onDataLoad }) => {
       <button onClick={e => {
         e.stopPropagation();
 	download('transcript.txt', messages
-          .map((t, i) => (t.user || '').concat(': ').concat(translated[i]))
+          .map((t, i) => getName(t.user || '').concat(': ').concat(translated[i]))
 	  .join('\n')
 	);
       }}>Descargar todo</button>
@@ -85,7 +87,7 @@ export default ({ db, room_id, onDataLoad }) => {
 	      alignItems: 'center',
 	      backgroundColor: 'lightgrey',
 	    }}>
-	    {m.user && <span><b>{m.user}</b>:&nbsp;</span>}
+	    {m.user && <span><b>{getName(m.user)}</b>:&nbsp;</span>}
 	    <span style={{flex: 1}}>{translated[i]}</span>
 	    <TextToSpeech text={translated[i]}/>
 	    {m.score != null && <Score score={m.score}/>}

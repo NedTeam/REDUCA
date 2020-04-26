@@ -42,6 +42,7 @@ export default ({
   const { room_id } = useParams();
   const video1 = useRef();
   const video2 = useRef();
+  const [ muted, setMuted ] = useState(false);
   const [ user_data, setUserData ] = useState([]);
   const [ chat_history, setChatHistory ] = useState([]);
   const [ transcript_history, setTranscriptHistory ] = useState([]);
@@ -60,6 +61,10 @@ export default ({
       msg.delete();
     });
   }, [ db, room_name ]);
+  useEffect(() => {
+    const track = stream && stream.getAudioTracks()[0];
+    if(track) track.enabled = !muted
+  }, [muted, stream]);
   const readMessage = data => {
     const msg = JSON.parse(data.message);
     const sender = data.sender;
@@ -153,7 +158,7 @@ export default ({
       }
     }, 100)
   };
- 
+  
   const disconnect = (spc=pc) => {
     sender && spc.removeTrack(sender);
     if(video1.current) video1.current.srcObject = null;
@@ -295,11 +300,11 @@ export default ({
               }}
             >
               <div className= "flexCenter boton">
-                <i className="fa fa-video-camera" style={{color: video_connected ? 'black' : 'red', fontSize: '1.5em'}}></i>
+                <i className="fa fa-video-camera" style={{color: !video_connected ? 'black' : 'red', fontSize: '1.5em'}}></i>
               </div>
             </div>
-            <div className= "flexCenter boton">
-                <i class="fas fa-microphone-alt" style={{color: video_connected ? 'black' : 'red', fontSize: '1.5em'}}></i>
+            <div className= "flexCenter boton" onClick={e => setMuted(m => !m)}>
+                <i class="fas fa-microphone-alt" style={{color: !video_connected || !muted ? 'black' : 'red', fontSize: '1.5em'}}></i>
             </div>
             <div className= "flexCenter boton">
                 <i class="fas fa-external-link-alt" style={{color: 'black', fontSize: '1.5em'}}></i>
