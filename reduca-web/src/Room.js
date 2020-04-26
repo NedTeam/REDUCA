@@ -277,7 +277,7 @@ export default ({
       </div>
       
         <div className="rightColumn">
-          <div id="buttons" style={{width: "100%"}}>
+          <div id="buttons" style={{width: "100%", display: 'flex', justifyContent: 'space-between', marginBottom:'0.5rem'}}>
             <div style={{cursor: 'pointer', paddingBottom: '0.5em'}}
               onClick={() => {
                 if(!video_connected){
@@ -291,18 +291,24 @@ export default ({
                 setVideoConnected(n => !n);
               }}
             >
-              <div className= "flexCenter" style={{backgroundColor:'rgba(192,192,192,0.8)', padding: '1em', borderRadius:'1em', textAlign: 'center', height: '2.2em', width: '2.2em'}}>
-                <i className="fa fa-video-camera" style={{color: 'black', fontSize: '1.5em'}}></i>
-                <p style={{lineHeight:'1%', fontSize: '0.8em'}}>
-                  {video_connected ? 'On' : 'Off'}
-                </p>
+              <div className= "flexCenter boton">
+                <i className="fa fa-video-camera" style={{color: video_connected ? 'black' : 'red', fontSize: '1.5em'}}></i>
               </div>
+            </div>
+            <div className= "flexCenter boton">
+                <i class="fas fa-microphone-alt" style={{color: video_connected ? 'black' : 'red', fontSize: '1.5em'}}></i>
+            </div>
+            <div className= "flexCenter boton">
+                <i class="fas fa-external-link-alt" style={{color: 'black', fontSize: '1.5em'}}></i>
+            </div>
+            <div className= "flexCenter boton">
+                <i class="fas fa-ellipsis-v" style={{color: 'black', fontSize: '1.5em'}}></i>
             </div>
           </div>
            
           <div id="videos">
-            <video style={{ border: '1px solid black', width: '100%'}} autoplay muted ref={video1} onPlay={onPlay}/>
-            <video style={{ border: '1px solid black', width: '100%'}} autoplay ref={video2}/>
+            <video style={{ width: '100%'}} className='video' autoplay muted ref={video1} onPlay={onPlay}/>
+            <video style={{ width: '100%'}} className='video' autoplay ref={video2}/>
           </div>
 	        <Chat db={db} user={user} room_id={room_id} onDataLoad={setChatHistory}/>
         </div>

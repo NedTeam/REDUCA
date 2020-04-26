@@ -34,21 +34,20 @@ const Chat = ({ db, room_id, user, onDataLoad }) => {
   };
   return (
     <div id='chat'>
-      <div>Chat:</div>
+      <h3 style={{marginLeft: '1rem', marginTop: '1rem'}}>Chat</h3>
       <div id='mensajes' style={{
             display: 'flex',
             flexDirection: 'column',
-            overflow: 'auto'}}>
+            overflow: 'auto',
+            flexGrow: 1}}>
         {messages.map((m,i) => (
         <div
           key={i}
           style={{
-            margin: '0.3em',
             display: 'flex',
             padding: '0.3em',
-            border: '1px solid grey',
-            borderRadius: '3px',
-            backgroundColor: 'lightgrey',
+            borderTop: '1px solid grey',
+            backgroundColor: '#efefef',
             display:'flex',
             flexDirection:'column'
           }}>
@@ -66,11 +65,11 @@ const Chat = ({ db, room_id, user, onDataLoad }) => {
 	<input
 	  type='text'
 	  value={new_message}
-	  style={{flex: 1, padding: '0.4em', borderRadius: '3px'}}
+	  style={{flex: 1, padding: '0.4em', borderRadius: '3px', alignSelf: 'flex-end'}}
 	  onChange={e => setNewMessage(e.target.value)}
 	/>
-	<button disabled={!new_message} onClick={sendMessage}>
-	  Enviar
+	<button className="enviar" disabled={!new_message} onClick={sendMessage}>
+	  Send
 	</button>
       </div>
     </div>

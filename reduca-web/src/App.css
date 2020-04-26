@@ -103,23 +103,66 @@
   width: 15vh;
   padding: 1em;
   border-style: none;
-  border-radius: 1em;
+  border-radius: 1rem;
 }
 
 #chat{
   display: flex;
   flex-direction: column;
   overflow: auto;
+  height: 100%;
+  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
+  border-radius: 1rem 1rem 0 0;
+  background-color: #d8d8d8;
 }
 
-#video {
-  height: calc(100% * 1.75);
+.boton {
+  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
+  background-color: #d8d8d8;
+}
+
+.video {
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+  background-color: #d8d8d8;
+  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
 }
 
 body,html {
   margin: 0;
   padding: 0;
 }
+
+.boton {
+  background-color: rgba(192,192,192,0.8);
+  padding: 1rem; 
+  margin-right: 0.5rem;
+  border-radius: 1rem;
+  text-align: center;
+  height: 2.2rem;
+  width: 2.2rem;
+}
+
+.enviar {
+	background-color:#B9FACF;
+	border:1px solid #18ab29;
+	display:inline-block;
+	cursor:pointer;
+	color: black;
+	font-family:Arial;
+  font-size:1rem;
+	text-decoration:none;
+  text-shadow:0px 1px 0px #2f6627;
+  height: 100%;
+}
+.enviar:hover {
+	background-color:#5cbf2a;
+}
+.enviar:active {
+	position:relative;
+}
+
+        
 
 @media screen and (max-width: 750px){
   .classGrid3 {
