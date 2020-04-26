@@ -4,7 +4,7 @@ const Chat = ({ db }) => {
   const [messages, setMessages] = useState([]);
   let query = useMemo(() => db.collection("chat"), [db]);
   useEffect(() => {
-    console.log("jflsdjf");
+    //Mirar linea 115 de room.js
     query.onSnapshot(
       querySnapshot => {
         querySnapshot.forEach(doc => {
