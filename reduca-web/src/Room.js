@@ -142,7 +142,7 @@ export default ({
 
   const calculateNext = (prev_data={}, data={}) => {
     return Object.fromEntries(Object.entries(data).map(([k,v]) => (
-      [k, ((prev_data[k] || 0)*29+v)/30]
+      [k, ((Math.pow(prev_data[k] , 98/100)|| 0)*29+v)/30]
     )));
   }
   
