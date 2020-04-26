@@ -21,7 +21,12 @@ export default ({ db, user, setUser, functions }) => {
     <div>
       <Switch>
         <Route exact path="/home">
-          <RoomList db={db} user={user} functions={functions} />
+          <RoomList
+            db={db}
+            user={user}
+            setUser={setUser}
+            functions={functions}
+          />
           <div>
             <Link to="/" onClick={logout}>
               Log out

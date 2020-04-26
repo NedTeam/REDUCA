@@ -1,15 +1,30 @@
 import React from "react";
 import logo from "./logo.svg";
+import firebase from "firebase";
 
 import { Link } from "react-router-dom";
 
 const rooms = {
   physics: { title: "Particle Physics", description: "Physics" },
   deeplearning: { title: "Deep Learning", description: "Depp learning" },
-  math: { title: "Math 101", description: "Math 101" }
+  math: { title: "Math 101", description: "Math 101" },
+  biochemistry: { title: "Biochemistry", description: "Biochemistry" },
+  software: {
+    title: "Software Engineering",
+    description: "Software Engineering"
+  },
+  economics: { title: "Economics 101", description: "Economics 101" }
 };
 
-function App() {
+export default ({ user, setUser }) => {
+  const logout = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(result => {
+        setUser(false);
+      });
+  };
   return (
     <div className="">
       <div
@@ -49,24 +64,38 @@ function App() {
             }
             style={{ height: "20vh" }}
           />
-          <div style={{ textAlign: "left", padding: "1em" }}>
-            <h1>Hola</h1>
-            <p>Hola</p>
+          <div style={{ textAlign: "center", padding: "1em 1em 0 1em" }}>
+            <h1>Hi, Javier!</h1>
           </div>
-          <button class="mainButton">Settings</button>
+          <button class="mainButton">My Profile</button>
+          <button
+            class="mainButton"
+            style={{
+              backgroundColor: "rgb(239, 239, 239)",
+              marginLeft: "10px"
+            }}
+          >
+            Log out
+          </button>
         </div>
         <div style={{ backgroundColor: "white" }}>
           <div className="flexCenter" style={{ paddingTop: "2vh" }}>
             <div
               className="flexMain"
               style={{
-                backgroundColor: "#EFEFEF",
-                borderRadius: "1em",
                 height: "5vh",
                 width: "95%"
               }}
             >
-              <p style={{ fontSize: "1em", padding: "0.1em" }}>Hola</p>
+              <h1
+                style={{
+                  marginTop: "auto",
+                  marginBottom: "auto"
+                }}
+              >
+                My Courses
+              </h1>
+              <button class="mainButton">Add more courses</button>
             </div>
           </div>
           <div className="homeGrid3">
@@ -159,6 +188,4 @@ function App() {
       </div>
     </div>
   );
-}
-
-export default App;
+};
