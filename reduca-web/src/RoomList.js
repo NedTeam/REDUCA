@@ -82,6 +82,10 @@ export default ({ user, setUser, logout }) => {
             3. Click in the transcription bar at the bottom of the screen to
             display the transcription history.
           </p>
+          <p style={{ fontSize: 20 }}>
+            4. Your microphone will be automatically disabled when you are not
+	    looking near the camera
+          </p>
         </div>
         <div style={{ backgroundColor: "white" }}>
           <div className="flexCenter" style={{ paddingTop: "2vh" }}>
