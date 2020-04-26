@@ -9,7 +9,7 @@ import Chat from "./Chat";
 
 import { Switch, Route, Link } from "react-router-dom";
 
-export default ({ db, user, setUser, functions }) => {
+export default ({ db, user, setUser }) => {
   const logout = () => {
     firebase
       .auth()
@@ -27,16 +27,11 @@ export default ({ db, user, setUser, functions }) => {
             db={db}
             user={user}
             setUser={setUser}
-            functions={functions}
+            logout={logout}
           />
-          <div>
-            <Link to="/" onClick={logout}>
-              Log out
-            </Link>
-          </div>
         </Route>
         <Route path="/home/room/:room_id">
-          <Room db={db} user={user} functions={functions} />
+          <Room db={db} user={user} />
         </Route>
       </Switch>
     </div>

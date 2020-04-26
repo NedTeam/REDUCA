@@ -16,15 +16,7 @@ const rooms = {
   economics: { title: "Economics 101", description: "Economics 101" }
 };
 
-export default ({ user, setUser }) => {
-  const logout = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(result => {
-        setUser(false);
-      });
-  };
+export default ({ user, setUser, logout }) => {
   return (
     <div className="">
       <div
@@ -61,6 +53,7 @@ export default ({ user, setUser }) => {
           <button class="mainButton">My Profile</button>
           <button
             class="mainButton"
+	    onClick={logout}
             style={{
               backgroundColor: "rgb(239, 239, 239)",
               marginLeft: "10px"
@@ -99,6 +92,7 @@ export default ({ user, setUser }) => {
                   <div
                     className="boxShadow"
                     style={{
+                      height: '20em',
                       textAlign: "left",
                       backgroundColor: "#EFEFEF",
                       borderRadius: "1em"

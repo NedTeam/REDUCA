@@ -15,7 +15,7 @@ function download(filename, text) {
   document.body.removeChild(element);
 }
 
-const getName = email => email.split('@')[0]
+const getName = email => email && email.split('@')[0]
 
 export default ({ db, room_id, onDataLoad }) => {
   const [ messages, setMessages ] = useState([]);

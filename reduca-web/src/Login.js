@@ -11,8 +11,9 @@ export default ({
   const [pass, setPass] = useState();
 
   return (
-    <div className="flexCenter" style={{paddingTop: '20vh'}}>
-        <img className="avatarIcon" src={"https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ-L3WmOI1l80VxqPsFwAX0FI7eKWZCMNY4d6vSDupLYBCfUv2d&usqp=CAU"} style={{height: '10em', padding: '1em'}}/>
+    <div className="flexCenter" style={{paddingTop: '17vh'}}>
+        <img className="avatarIcon" src={"/e-duco_Icon_W.png"} style={{height: '12em', padding: '0.2em'}}/>
+        <img src={"/e-duco_Logo_N.png"} style={{height: '5em', padding: '0.2em'}}/>
         <div style={{padding: '1em'}}>
           <input
 	    value={mail}

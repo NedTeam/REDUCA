@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import TextToSpeech from "./TextToSpeech.js";
 import Score from "./Score.js";
 
-const getName = email => email.split('@')[0]
+const getName = email => email && email.split('@')[0]
 
 const Chat = ({ db, room_id, user, onDataLoad }) => {
   const [messages, setMessages] = useState([]);

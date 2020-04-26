@@ -35,7 +35,6 @@ const datosMedia = [
 
 export default ({
   db,
-  functions,
   user,
 }) => {
   if(!db) return null;
@@ -277,7 +276,7 @@ export default ({
 		  <TranscriptHistory room_id={room_id} db={db} onDataLoad={setTranscriptHistory}/>
 		</div>
 		<div style={{display: !transcript_modal_opened ? 'block' : 'none'}}>
-		  {transcript.split('\n').map(line => <div>{line}</div>)}
+		  {(transcript || '').split('\n').map(line => <div>{line}</div>)}
 		</div>
 	      </div>
 	    </div>
