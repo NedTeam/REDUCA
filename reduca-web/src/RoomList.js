@@ -16,6 +16,17 @@ const rooms = {
   economics: { title: "Economics 101", description: "Economics 101" }
 };
 
+const images = [
+  "https://images.pexels.com/photos/714699/pexels-photo-714699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+  "https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+  "https://images.pexels.com/photos/5775/calculator-scientific.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+  "https://images.pexels.com/photos/4149035/pexels-photo-4149035.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+  "https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+  "https://images.pexels.com/photos/3671146/pexels-photo-3671146.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+];
+
+const getName = email => email && email.split("@")[0];
+
 export default ({ user, setUser, logout }) => {
   return (
     <div className="">
@@ -48,12 +59,12 @@ export default ({ user, setUser, logout }) => {
             style={{ height: "20vh" }}
           />
           <div style={{ textAlign: "center", padding: "1em 1em 0 1em" }}>
-            <h1>Hi, Javier!</h1>
+            <h2>Hi, {getName(user)}!</h2>
           </div>
           <button class="mainButton">My Profile</button>
           <button
             class="mainButton"
-	    onClick={logout}
+            onClick={logout}
             style={{
               backgroundColor: "rgb(239, 239, 239)",
               marginLeft: "10px"
@@ -92,18 +103,13 @@ export default ({ user, setUser, logout }) => {
                   <div
                     className="boxShadow"
                     style={{
-                      height: '20em',
+                      height: "20em",
                       textAlign: "left",
                       backgroundColor: "#EFEFEF",
                       borderRadius: "1em"
                     }}
                   >
-                    <img
-                      className="projectImage"
-                      src={
-                        "https://widgetwhats.com/app/uploads/2019/11/free-profile-photo-whatsapp-4.png"
-                      }
-                    />
+                    <img className="projectImage" src={images[i]} />
                     <p
                       style={{
                         paddingLeft: "1em",
