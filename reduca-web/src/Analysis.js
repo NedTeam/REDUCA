@@ -9,12 +9,13 @@ import RadarChart from 'react-svg-radar-chart';
 import 'react-svg-radar-chart/build/css/index.css'
 
 const captions = {
-  // columns
-  battery: 'Battery Capacity',
-  design: 'Design',
-  useful: 'Usefulness',
-  speed: 'Speed',
-  weight: 'Weight'
+  angry: 'angry',
+  disgusted: 'disgusted',
+  fearful: 'fearful',
+  happy: 'happy',
+  neutral: 'neutral',
+  sad: 'sad',
+  surprised: 'surprised',
 };
 
 export default (props) => {

@@ -5,7 +5,8 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-
+ 
+import * as faceapi from 'face-api.js'
 import { Link, useParams } from 'react-router-dom';
 import Analysis from "./Analysis";
 import TranscriptHistory from "./TranscriptHistory";
@@ -39,6 +40,7 @@ export default ({
   const { room_id } = useParams();
   const video1 = useRef();
   const video2 = useRef();
+  const [ user_data, setUserData ] = useState([]);
   const [ chat_history, setChatHistory ] = useState([]);
   const [ transcript_history, setTranscriptHistory ] = useState([]);
   const [ sender, setSender ] = useState();
@@ -106,6 +108,7 @@ export default ({
 	});
       }
     }
+
     return navigator.mediaDevices.getUserMedia({audio:true, video: { width: 1280, height: 720 }})
       .then(stream => {
 	video1.current.srcObject = stream
@@ -121,6 +124,33 @@ export default ({
       });
   }
 
+  const timeout = t => new Promise(res => setTimeout(res, t))
+
+  const calculateNext = (prev_data={}, data={}) => {
+    return Object.fromEntries(Object.entries(data).map(([k,v]) => (
+      [k, ((prev_data[k] || 0)*29+v)/30]
+    )));
+  }
+  
+  const onPlay = async e => {
+    await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+    await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+    await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
+    await faceapi.nets.faceExpressionNet.loadFromUri('/models');
+    const video = video1.current;
+    const displaySize = { width: video.width, height: video.height };
+    setInterval(async () => {
+      const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
+      if(detections.length){
+	const expressions = detections[0].expressions;
+	setUserData(prev_data => {
+	  const data = [{data: Object.assign({}, calculateNext(prev_data[0] && prev_data[0].data, expressions)), meta: {color: 'red'}}];
+	  return data
+	});
+      }
+    }, 100)
+  };
+ 
   const disconnect = (spc=pc) => {
     sender && spc.removeTrack(sender);
     if(video1.current) video1.current.srcObject = null;
@@ -182,7 +212,7 @@ export default ({
     <div className="" style={{position: 'relative'}}>
       <div className="classGrid3">
         <div className="leftColumn" style={{height: '95vh', display: 'flex', flexDirection: 'column'}}>
-          <Analysis datosGraph={graph}></Analysis>
+          <Analysis datosGraph={user_data}></Analysis>
 	  <div style={{overflow: 'auto'}}>
 	    {room_users.map(u => (
 	      <User 
@@ -271,7 +301,7 @@ export default ({
           </div>
            
           <div id="videos">
-            <video style={{ border: '1px solid black', width: '100%'}} autoplay muted ref={video1}/>
+            <video style={{ border: '1px solid black', width: '100%'}} autoplay muted ref={video1} onPlay={onPlay}/>
             <video style={{ border: '1px solid black', width: '100%'}} autoplay ref={video2}/>
           </div>
 	        <Chat db={db} user={user} room_id={room_id} onDataLoad={setChatHistory}/>
