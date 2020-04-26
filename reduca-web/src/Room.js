@@ -41,7 +41,8 @@ export default ({
   const { room_id } = useParams();
   const video1 = useRef();
   const video2 = useRef();
-  const [ muted, setMuted ] = useState(false);
+  const [ userMuted, setUserMuted ] = useState(false);
+  const [ faceMuted, setFaceMuted ] = useState(false);
   const [ user_data, setUserData ] = useState([]);
   const [ chat_history, setChatHistory ] = useState([]);
   const [ transcript_history, setTranscriptHistory ] = useState([]);
@@ -62,8 +63,9 @@ export default ({
   }, [ db, room_name ]);
   useEffect(() => {
     const track = stream && stream.getAudioTracks()[0];
-    if(track) track.enabled = !muted
-  }, [muted, stream]);
+    let mute = (userMuted && faceMuted);
+    if(track) track.enabled = mute
+  }, [faceMuted, stream, userMuted]);
   const readMessage = data => {
     const msg = JSON.parse(data.message);
     const sender = data.sender;
@@ -148,16 +150,20 @@ export default ({
     setInterval(async () => {
       const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
       if(detections.length){
-	const expressions = detections[0].expressions;
-	debugger;
-	setUserData(prev_data => ({
-	  ...prev_data,
-	  [who]: Object.assign({}, calculateNext(prev_data[who], expressions)),
-	}));
+        setFaceMuted(true)
+        const expressions = detections[0].expressions;
+        // debugger;
+        setUserData(prev_data => ({
+          ...prev_data,
+          [who]: Object.assign({}, calculateNext(prev_data[who], expressions)),
+        }));
+      } else {
+        // console.log("No hay cara")
+        setFaceMuted(false)
       }
-    }, 100)
+    }, 200)
   };
-  
+
   const disconnect = (spc=pc) => {
     sender && spc.removeTrack(sender);
     if(video1.current) video1.current.srcObject = null;
@@ -302,8 +308,8 @@ export default ({
                 <i className="fa fa-video-camera" style={{color: !video_connected ? 'black' : 'red', fontSize: '1.5em'}}></i>
               </div>
             </div>
-            <div className= "flexCenter boton" onClick={e => setMuted(m => !m)}>
-                <i class="fas fa-microphone-alt" style={{color: !video_connected || !muted ? 'black' : 'red', fontSize: '1.5em'}}></i>
+            <div className= "flexCenter boton" onClick={e => setUserMuted(m => !m)}>
+                <i class="fas fa-microphone-alt" style={{color: !video_connected || !(userMuted && faceMuted) ? 'black' : 'red', fontSize: '1.5em'}}></i>
             </div>
             <div className= "flexCenter boton">
                 <i class="fas fa-external-link-alt" style={{color: 'black', fontSize: '1.5em'}}></i>
