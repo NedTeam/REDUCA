@@ -223,7 +223,7 @@ export default ({
           <iframe
             style={{
               width: '100%',
-              height: '100%',
+              height: '85vh',
               overflow: 'hidden',
               border: '0px',
             }}
@@ -237,7 +237,7 @@ export default ({
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '1.4em',
-                position: 'absolute',
+                height: '15vh',
                 bottom: '2em',
                 left: 0,
                 right: 0,
@@ -248,9 +248,9 @@ export default ({
                 color: 'lightGray',
                 borderRadius: '10px',
                 padding: '0.5em',
-		width: '70vw',
+		            width: '70vw',
               }}>
-		{transcript.split('\n').map(line => <div>{line}</div>)}
+		          {transcript.split('\n').map(line => <div>{line}</div>)}
 	      </div>
 	    </div>
           )}
@@ -284,7 +284,7 @@ export default ({
             <video style={{ border: '1px solid black', width: '100%', height: '10.6rem'}} autoplay muted ref={video1}/>
             <video style={{ border: '1px solid black', width: '100%', height: '10.6rem'}} autoplay ref={video2}/>
           </div>
-	  <Chat db={db} room_id={room_id}/>
+	        <Chat db={db} room_id={room_id}/>
         </div>
       </div>
     </div>
