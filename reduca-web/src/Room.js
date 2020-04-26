@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
- 
+
 import * as faceapi from 'face-api.js'
 import { Link, useParams } from 'react-router-dom';
 import Analysis from "./Analysis";
@@ -248,7 +248,7 @@ export default ({
               border: '0px',
             }}
             scrolling='no'
-            src={`https://wbo.ophir.dev/boards/${room_id}`}
+            src={`https://witeboard.com/educo-${room_id}`}
           />
           {transcript && (
             <div
