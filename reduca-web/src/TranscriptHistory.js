@@ -47,29 +47,31 @@ export default ({ db, room_id, onDataLoad }) => {
   const translated = messages.map(m => translate_to ? translation[m.text] || "Loading..." : m.text);
   return (
     <div>
-      <div style={{display: 'flex', alignItems: 'center'}}>
-	<div>Transcription:</div>
-	<Score score={median_score}/>
-      </div>
-      <br/>
-      <select
-	value={translate_to}
-	onChange={e => setTranslateTo(e.target.value)}
-	onClick={e => e.stopPropagation()}
-      >
-	<option value='null'>Sin traducir</option>
-	<option value='es'>Español</option>
-	<option value='en'>English</option>
-	<option value='de'>Deutsch</option>
-	<option value='fr'>Français</option>
+      <div style={{display: 'flex', alignItems: 'center', marginBottom:'1rem'}}>
+	      <div>Transcription history:</div>
+        <div style={{margin: 'auto'}}>
+          <Score score={median_score}/>
+        </div>
+        <select
+        value={translate_to}
+        style={{height:'3rem', order: '2'}}
+        onChange={e => setTranslateTo(e.target.value)}
+        onClick={e => e.stopPropagation()}>
+        <option value='null'>Language</option>
+        <option value='es'>Español</option>
+        <option value='en'>English</option>
+        <option value='de'>Deutsch</option>
+        <option value='fr'>Français</option>
       </select>
-      <button onClick={e => {
+      <button className="enviar" style={{height:'3rem', order: '2', marginLeft:'1rem'}} onClick={e => {
         e.stopPropagation();
 	download('transcript.txt', messages
           .map((t, i) => (t.user || '').concat(': ').concat(translated[i]))
 	  .join('\n')
 	);
-      }}>Descargar todo</button>
+      }}>Download</button>
+      </div>
+   
       {messages.map((m,i) => {
 	return (
 	  <div
@@ -77,13 +79,12 @@ export default ({ db, room_id, onDataLoad }) => {
 	    onClick={e => e.stopPropagation()}
 	    style={{
 	      color: 'grey',
-	      margin: '0.3em',
 	      display: 'flex',
 	      padding: '0.3em',
 	      border: '1px solid grey',
 	      borderRadius: '3px',
 	      alignItems: 'center',
-	      backgroundColor: 'lightgrey',
+	      backgroundColor: 'rgb(239, 239, 239)',
 	    }}>
 	    {m.user && <span><b>{m.user}</b>:&nbsp;</span>}
 	    <span style={{flex: 1}}>{translated[i]}</span>
