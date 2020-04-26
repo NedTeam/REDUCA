@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "./logo.svg";
+import logoEduco from "./logo-educo.png";
 import firebase from "firebase";
 
 import { Link } from "react-router-dom";
@@ -43,16 +43,7 @@ export default ({ user, setUser }) => {
                 borderRadius: "1em"
               }}
             >
-              <i
-                class="fa fa-search fa-xl"
-                style={{
-                  color: "black",
-                  fontSize: "1.5em",
-                  display: "inline",
-                  paddingRight: "12vh",
-                  paddingLeft: "1vh"
-                }}
-              ></i>
+              <img src={logoEduco} height="50px" alt="Logo" />
             </div>
           </div>
         </div>
