@@ -70,7 +70,7 @@ export default ({
   useEffect(() => {
     const track = stream && stream.getAudioTracks()[0];
     console.log(`Muting: ${globalMuted}`);
-    if(track) track.enabled = globalMuted;
+    if(track) track.enabled = !globalMuted;
   }, [globalMuted, stream]);
   const readMessage = data => {
     const msg = JSON.parse(data.message);
