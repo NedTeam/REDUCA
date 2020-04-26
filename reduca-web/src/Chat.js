@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import TextToSpeech from './TextToSpeech.js';
 import Score from './Score.js'
 
-const Chat = ({ db, room_id, user }) => {
+const Chat = ({ db, room_id, user, onDataLoad }) => {
   const [messages, setMessages] = useState([]);
   const [ new_message, setNewMessage ] = useState('');
   let query = useMemo(() => db.collection("chat").where('room_id', '==', room_id), [db, room_id]);
@@ -11,7 +11,9 @@ const Chat = ({ db, room_id, user }) => {
       querySnapshot => {
 	let messages = []
         querySnapshot.forEach(doc => messages.push(doc.data()));
-	setMessages(messages.sort((m1, m2) => m1.timestamp - m2.timestamp));
+	const sorted = messages.sort((m1, m2) => m1.timestamp - m2.timestamp);
+	setMessages(sorted);
+	onDataLoad(sorted);
       },
       err => {
         console.log(`Encountered error: ${err}`);

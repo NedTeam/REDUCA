@@ -3,6 +3,7 @@ import React, {
   useState,
   useEffect,
   useCallback,
+  useMemo,
 } from 'react';
 
 import { Link, useParams } from 'react-router-dom';
@@ -38,6 +39,8 @@ export default ({
   const { room_id } = useParams();
   const video1 = useRef();
   const video2 = useRef();
+  const [ chat_history, setChatHistory ] = useState([]);
+  const [ transcript_history, setTranscriptHistory ] = useState([]);
   const [ sender, setSender ] = useState();
   const [ transcript_modal_opened, setTranscriptModalOpened ] = useState();
   const [ video_connected, setVideoConnected ] = useState();
@@ -157,72 +160,45 @@ export default ({
     });
   }, [pc, db, sendMessage]);
 
-  const datosUsuario1 = [{
+  const getRandomData = (seed) => [{
     data: {
-    battery: .2,
-    design: .4,
-    useful: .1,
-    speed: .9,
-    weight: .3
+      battery: Math.random(),
+      design: Math.random(),
+      useful: Math.random(),
+      speed: Math.random(),
+      weight: Math.random(),
     },
     meta: { 
       color: 'red' 
     }
   }];  
 
-  const datosUsuario2 = [{
-    data: {
-    battery: .8,
-    design: .3,
-    useful: .5,
-    speed: .2,
-    weight: .1
-    },
-    meta: { 
-      color: 'green' 
-    }
-  }];  
-
-  const datosUsuario3 = [{
-    data: {
-    battery: .45,
-    design: .4,
-    useful: .6,
-    speed: .5,
-    weight: .9
-    },
-    meta: { 
-      color: 'yellow' 
-    }
-  }];  
-
+  
+  const room_users = useMemo(() => {
+    const all = chat_history.concat(transcript_history);
+    const u = all.reduce((p,c) => ({...p, [c.user]: (p[c.user] || []).concat(c)}), {})
+    return Object.entries(u).map(([k,v]) => {
+      const median_score = v.reduce((p,c) => p + (c.score || 0), 0)/v.length;
+      return {email: k, messages: v, score: median_score, data: getRandomData(k)}
+    });
+  }, [chat_history, transcript_history]);
+  
   return (
     <div className="" style={{position: 'relative'}}>
       <div className="classGrid3">
-
-        <div className="leftColumn">
+        <div className="leftColumn" style={{height: '95vh', display: 'flex', flexDirection: 'column'}}>
           <Analysis datosGraph={graph}></Analysis>
-          <User 
-            name="Uriel" 
-            status="Conected"
-            data={datosUsuario1}
-            onClick={setGraph}
-            onStudentClick={() => {setGraph(datosUsuario1)}}
-          ></User>
-          <User 
-            name="Marco" 
-            status="Conected"
-            data={datosUsuario1}
-            onClick={setGraph}
-            onStudentClick={() => {setGraph(datosUsuario2)}}
-          ></User>
-          <User 
-            name="Javier" 
-            status="Conected"
-            data={datosUsuario1}
-            onClick={setGraph}
-            onStudentClick={() => {setGraph(datosUsuario3)}}
-          ></User>
+	  <div style={{overflow: 'auto'}}>
+	    {room_users.map(u => (
+	      <User 
+		name={u.email}
+		status="Conected"
+		score={u.score}
+		data={u.data}
+		onStudentClick={() => {setGraph(u.data)}}
+	      />
+	  ))}
+          </div>
         </div>
 
         <div className="centerColumn" style={{width:'100%'}}>
@@ -259,7 +235,12 @@ export default ({
                 padding: '0.5em',
 		width: '70vw',
               }}>
-		{transcript_modal_opened ? <TranscriptHistory room_id={room_id} db={db}/> : transcript.split('\n').map(line => <div>{line}</div>)}
+		<div style={{display: transcript_modal_opened ? 'block' : 'none'}}>
+		  <TranscriptHistory room_id={room_id} db={db} onDataLoad={setTranscriptHistory}/>
+		</div>
+		<div style={{display: !transcript_modal_opened ? 'block' : 'none'}}>
+		  {transcript.split('\n').map(line => <div>{line}</div>)}
+		</div>
 	      </div>
 	    </div>
           )}
@@ -293,7 +274,7 @@ export default ({
             <video style={{ border: '1px solid black', width: '100%', height: '10.6rem'}} autoplay muted ref={video1}/>
             <video style={{ border: '1px solid black', width: '100%', height: '10.6rem'}} autoplay ref={video2}/>
           </div>
-	  <Chat db={db} user={user} room_id={room_id}/>
+	  <Chat db={db} user={user} room_id={room_id} onDataLoad={setChatHistory}/>
         </div>
       </div>
     </div>
