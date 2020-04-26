@@ -43,6 +43,7 @@ export default ({
   const video2 = useRef();
   const [ userMuted, setUserMuted ] = useState(false);
   const [ faceMuted, setFaceMuted ] = useState(0);
+  const [ globalMuted, setGlobalMuted ] = useState(false);
   const [ user_data, setUserData ] = useState([]);
   const [ chat_history, setChatHistory ] = useState([]);
   const [ transcript_history, setTranscriptHistory ] = useState([]);
@@ -62,10 +63,15 @@ export default ({
     });
   }, [ db, room_name ]);
   useEffect(() => {
+    let mute = (userMuted || (faceMuted < 10));
+    console.log(`Setting global mute ${mute} - ${userMuted} - ${faceMuted}`);
+    setGlobalMuted(mute);
+  }, [faceMuted, userMuted]);
+  useEffect(() => {
     const track = stream && stream.getAudioTracks()[0];
-    let mute = (userMuted && faceMuted > 10);
-    if(track) track.enabled = mute
-  }, [faceMuted, stream, userMuted]);
+    console.log(`Muting: ${globalMuted}`);
+    if(track) track.enabled = globalMuted;
+  }, [globalMuted, stream]);
   const readMessage = data => {
     const msg = JSON.parse(data.message);
     const sender = data.sender;
@@ -150,7 +156,7 @@ export default ({
     setInterval(async () => {
       const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
       if(detections.length){
-        setFaceMuted(prev => Math.min(prev + 1, 20))
+        setFaceMuted(prev => Math.min(prev + 2, 20))
         const expressions = detections[0].expressions;
         // debugger;
         setUserData(prev_data => ({
@@ -159,7 +165,7 @@ export default ({
         }));
       } else {
         // console.log("No hay cara")
-        setFaceMuted(prev => Math.max(prev -1, 0))
+        setFaceMuted(prev => Math.max(prev - 1, 0))
       }
     }, 200)
   };
@@ -309,7 +315,7 @@ export default ({
               </div>
             </div>
             <div className= "flexCenter boton" onClick={e => setUserMuted(m => !m)}>
-                <i class="fas fa-microphone-alt" style={{color: !video_connected || !(userMuted && faceMuted > 10) ? 'black' : 'red', fontSize: '1.5em'}}></i>
+                <i class="fas fa-microphone-alt" style={{color: !video_connected || globalMuted ? 'black' : 'red', fontSize: '1.5em'}}></i>
             </div>
             <div className= "flexCenter boton">
                 <i class="fas fa-external-link-alt" style={{color: 'black', fontSize: '1.5em'}}></i>
