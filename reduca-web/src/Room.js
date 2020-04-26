@@ -231,8 +231,10 @@ export default ({
                 borderRadius: '10px',
                 padding: '0.5em',
                 width: '100%',
-	        overflow: 'auto',
-              }}>
+                overflow: 'auto',
+                position: transcript_modal_opened ? 'absolute' : 'relative',
+                bottom: 30,
+	     }}>
 		<div style={{display: transcript_modal_opened ? 'block' : 'none'}}>
 		  <TranscriptHistory room_id={room_id} db={db} onDataLoad={setTranscriptHistory}/>
 		</div>

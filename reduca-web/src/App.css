@@ -6,7 +6,7 @@
 }
 .flexMain {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   flex-direction: row;
 }
 .flexCenterR {
@@ -90,7 +90,7 @@
   padding: 10px 15px 10px 15px;
   background-color: rgba(0, 192, 192, 0.8);
   border-radius: 0.5em;
-  box-shadow: 1.5px 1.5px 8px #888888;
+  box-shadow: 1.5px 1.5px 6px #888888;
 }
 .mainButton:hover {
   background-color: rgba(0, 192, 192, 0.6);
