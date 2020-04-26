@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import TextToSpeech from './TextToSpeech.js';
 import Score from './Score.js'
 
-const Chat = ({ db, room_id }) => {
+const Chat = ({ db, room_id, user }) => {
   const [messages, setMessages] = useState([]);
   const [ new_message, setNewMessage ] = useState('');
   let query = useMemo(() => db.collection("chat").where('room_id', '==', room_id), [db, room_id]);
@@ -20,6 +20,7 @@ const Chat = ({ db, room_id }) => {
   }, [query]);
   const sendMessage = () => {
     db.collection("chat").add({
+      user,
       sender: 'test',
       text: new_message ,
       room_id,

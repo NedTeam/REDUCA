@@ -32,6 +32,7 @@ const datosMedia = [
 export default ({
   db,
   functions,
+  user,
 }) => {
   if(!db) return null;
   const { room_id } = useParams();
@@ -99,11 +100,12 @@ export default ({
       if(last_final_line_index !== last_index){
 	last_index = last_final_line_index;
 	db.collection('transcripts').add({
+	  user,
 	  sender: id,
 	  text: last_final_transcript,
 	  room_id,
 	  timestamp: (new Date()).getTime(),
-	});	
+	});
       }
     }
     return navigator.mediaDevices.getUserMedia({audio:true, video:true})
@@ -291,7 +293,7 @@ export default ({
             <video style={{ border: '1px solid black', width: '100%', height: '10.6rem'}} autoplay muted ref={video1}/>
             <video style={{ border: '1px solid black', width: '100%', height: '10.6rem'}} autoplay ref={video2}/>
           </div>
-	  <Chat db={db} room_id={room_id}/>
+	  <Chat db={db} user={user} room_id={room_id}/>
         </div>
       </div>
     </div>
