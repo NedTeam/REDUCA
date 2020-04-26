@@ -8,6 +8,7 @@ import React, {
 import { Link, useParams } from 'react-router-dom';
 import Analysis from "./Analysis";
 import User from "./User";
+import Chat from "./Chat";
 
 const servers = {iceServers: [
   {urls: 'stun:stun.services.mozilla.com'},
@@ -83,6 +84,7 @@ export default ({
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.start();
+    let last_index = -1;
     recognition.onresult = function(event) {
       const results = Array.from(event.results);
       const last_final_line_index = results.map(l => l.isFinal).lastIndexOf(true);
@@ -92,6 +94,10 @@ export default ({
       const last_transcript = results.slice(last_final_line_index+1).map(l => l && l[0] && l[0].transcript).join(' ');
       const lines = [ last_final_transcript, last_transcript ];
       sendMessage(id, JSON.stringify({transcript: lines.filter(f => f).join('.\n')}))
+      if(last_final_line_index !== last_index){
+	last_index = last_final_line_index;
+	db.collection('transcripts').add({ sender: id, text: last_final_transcript, room_id });	
+      }
     }
     return navigator.mediaDevices.getUserMedia({audio:true, video:true})
       .then(stream => {
@@ -278,6 +284,7 @@ export default ({
             <video style={{ border: '1px solid black', width: '100%', height: '10.6rem'}} autoplay muted ref={video1}/>
             <video style={{ border: '1px solid black', width: '100%', height: '10.6rem'}} autoplay ref={video2}/>
           </div>
+	  <Chat db={db} room_id={room_id}/>
         </div>
       </div>
     </div>

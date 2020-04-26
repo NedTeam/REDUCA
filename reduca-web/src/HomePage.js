@@ -23,8 +23,6 @@ export default ({ db, user, setUser, functions }) => {
         <Route exact path="/home">
           <RoomList db={db} user={user} functions={functions} />
           <div>
-            <TextToSpeech />
-            <Chat db={db} />
             <Link to="/" onClick={logout}>
               Log out
             </Link>
