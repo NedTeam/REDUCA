@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import TextToSpeech from "./TextToSpeech.js";
 import Score from "./Score.js";
 
-const Chat = ({ db, room_id }) => {
+const Chat = ({ db, room_id, user }) => {
   const [messages, setMessages] = useState([]);
   const [new_message, setNewMessage] = useState("");
   let query = useMemo(
@@ -14,7 +14,7 @@ const Chat = ({ db, room_id }) => {
       querySnapshot => {
         let messages = [];
         querySnapshot.forEach(doc => messages.push(doc.data()));
-        setMessages(messages);
+        setMessages(messages.sort((m1, m2) => m1.timestamp - m2.timestamp));
       },
       err => {
         console.log(`Encountered error: ${err}`);
@@ -23,9 +23,11 @@ const Chat = ({ db, room_id }) => {
   }, [query]);
   const sendMessage = () => {
     db.collection("chat").add({
+      user,
       sender: "test",
       text: new_message,
-      room_id
+      room_id,
+      timestamp: new Date().getTime()
     });
   };
   return (
@@ -46,7 +48,7 @@ const Chat = ({ db, room_id }) => {
         >
           <span style={{ flex: 1 }}>{m.text}</span>
           <TextToSpeech text={m.text} />
-          {m.score && <Score score={m.score} />}
+          {m.score != null && <Score score={m.score} />}
         </div>
       ))}
       <div style={{ display: "flex", alignItems: "center" }}>

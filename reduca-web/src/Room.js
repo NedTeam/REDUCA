@@ -7,6 +7,7 @@ import React, {
 
 import { Link, useParams } from 'react-router-dom';
 import Analysis from "./Analysis";
+import TranscriptHistory from "./TranscriptHistory";
 import User from "./User";
 import Chat from "./Chat";
 
@@ -31,17 +32,19 @@ const datosMedia = [
 export default ({
   db,
   functions,
+  user,
 }) => {
   if(!db) return null;
   const { room_id } = useParams();
   const video1 = useRef();
   const video2 = useRef();
   const [ sender, setSender ] = useState();
+  const [ transcript_modal_opened, setTranscriptModalOpened ] = useState();
   const [ video_connected, setVideoConnected ] = useState();
   const [ recognition, setRecognition ] = useState();
   const [ pc, setPc ] = useState();
   const [ id, setId ] = useState(Math.floor(Math.random()*1000000000));
-  const [ transcript, setTranscript ] = useState('');
+  const [ transcript, setTranscript ] = useState('Hello World');
   const [ stream, setStream ] = useState();
   const [ graph, setGraph ] = useState(datosMedia);
   const getSentiment = message => {
@@ -96,7 +99,13 @@ export default ({
       sendMessage(id, JSON.stringify({transcript: lines.filter(f => f).join('.\n')}))
       if(last_final_line_index !== last_index){
 	last_index = last_final_line_index;
-	db.collection('transcripts').add({ sender: id, text: last_final_transcript, room_id });	
+	db.collection('transcripts').add({
+	  user,
+	  sender: id,
+	  text: last_final_transcript,
+	  room_id,
+	  timestamp: (new Date()).getTime(),
+	});
       }
     }
     return navigator.mediaDevices.getUserMedia({audio:true, video:true})
@@ -122,11 +131,8 @@ export default ({
   }
   
   useEffect(() => {
-    //getSentiment('Hey there');
     const pc = new RTCPeerConnection(servers);
     setPc(pc);
-    // const interval_id = setTimeout(3000, () => showFriendsFace());
-    // return () => clearInterval(interval_id);
     return disconnect;
   }, []);
   
@@ -232,6 +238,7 @@ export default ({
           />
           {transcript && (
             <div
+	      onClick={() => setTranscriptModalOpened(o => !o)}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -244,13 +251,15 @@ export default ({
               }}
             >
               <div style={{
-                backgroundColor: 'gray',
+		height: transcript_modal_opened ? '90vh' : '3em',
+		transition: 'height 1s',
+		backgroundColor: 'gray',
                 color: 'lightGray',
                 borderRadius: '10px',
                 padding: '0.5em',
 		width: '70vw',
               }}>
-		{transcript.split('\n').map(line => <div>{line}</div>)}
+		{transcript_modal_opened ? <TranscriptHistory room_id={room_id} db={db}/> : transcript.split('\n').map(line => <div>{line}</div>)}
 	      </div>
 	    </div>
           )}
@@ -284,7 +293,7 @@ export default ({
             <video style={{ border: '1px solid black', width: '100%', height: '10.6rem'}} autoplay muted ref={video1}/>
             <video style={{ border: '1px solid black', width: '100%', height: '10.6rem'}} autoplay ref={video2}/>
           </div>
-	  <Chat db={db} room_id={room_id}/>
+	  <Chat db={db} user={user} room_id={room_id}/>
         </div>
       </div>
     </div>
