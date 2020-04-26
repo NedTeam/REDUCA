@@ -230,7 +230,7 @@ export default ({
                 color: 'lightGray',
                 borderRadius: '10px',
                 padding: '0.5em',
-                width: '70vw',
+                width: '100%',
 	        overflow: 'auto',
               }}>
 		<div style={{display: transcript_modal_opened ? 'block' : 'none'}}>
