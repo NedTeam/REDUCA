@@ -64,7 +64,7 @@ export default ({
   }, [ db, room_name ]);
   useEffect(() => {
     let mute = (userMuted || (faceMuted < 10));
-    console.log(`Setting global mute ${mute} - ${userMuted} - ${faceMuted}`);
+    //console.log(`Setting global mute ${mute} - ${userMuted} - ${faceMuted}`);
     setGlobalMuted(mute);
   }, [faceMuted, userMuted]);
   useEffect(() => {
@@ -149,23 +149,24 @@ export default ({
   const onPlay = (who, ref) => async e => {
     await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
     await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
-    await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
     await faceapi.nets.faceExpressionNet.loadFromUri('/models');
     const video = ref.current;
     const displaySize = { width: video.width, height: video.height };
     setInterval(async () => {
-      const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
-      if(detections.length){
-        setFaceMuted(prev => Math.min(prev + 2, 20))
-        const expressions = detections[0].expressions;
-        // debugger;
-        setUserData(prev_data => ({
-          ...prev_data,
-          [who]: Object.assign({}, calculateNext(prev_data[who], expressions)),
-        }));
-      } else {
-        // console.log("No hay cara")
-        setFaceMuted(prev => Math.max(prev - 1, 0))
+      const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceExpressions()
+      if(who === 'own'){
+	if(detections.length){
+          setFaceMuted(prev => Math.min(prev + 2, 20))
+          const expressions = detections[0].expressions;
+          // debugger;
+          setUserData(prev_data => ({
+            ...prev_data,
+            [who]: Object.assign({}, calculateNext(prev_data[who], expressions)),
+          }));
+	} else {
+          // console.log("No hay cara")
+          setFaceMuted(prev => Math.max(prev - 1, 0))
+	}
       }
     }, 200)
   };
