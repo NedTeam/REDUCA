@@ -61,6 +61,17 @@
   grid-auto-rows: 1fr;
   width: auto;
 }
+.announcementCard {
+  background-color: rgba(0, 192, 192, 0.8);
+  border-radius: 0.5em;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.announcementDate {
+  padding: 5px;
+  font-size: 12px;
+  font-weight: bold;
+}
 .avatarIcon {
   height: 6vh;
   border-radius: 100%;
@@ -106,18 +117,18 @@
   border-radius: 1rem;
 }
 
-#chat{
+#chat {
   display: flex;
   flex-direction: column;
   overflow: auto;
   height: 100%;
-  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
+  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
   border-radius: 1rem 1rem 0 0;
   background-color: #d8d8d8;
 }
 
 .boton {
-  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
+  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
   background-color: #d8d8d8;
 }
 
@@ -125,17 +136,18 @@
   margin-bottom: 1rem;
   border-radius: 1rem;
   background-color: #d8d8d8;
-  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
+  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
 }
 
-body,html {
+body,
+html {
   margin: 0;
   padding: 0;
 }
 
 .boton {
-  background-color: rgba(192,192,192,0.8);
-  padding: 1rem; 
+  background-color: rgba(192, 192, 192, 0.8);
+  padding: 1rem;
   margin-right: 0.5rem;
   border-radius: 1rem;
   text-align: center;
@@ -144,27 +156,25 @@ body,html {
 }
 
 .enviar {
-	background-color:#B9FACF;
-	border:1px solid #18ab29;
-	display:inline-block;
-	cursor:pointer;
-	color: black;
-	font-family:Arial;
-  font-size:1rem;
-	text-decoration:none;
-  text-shadow:0px 1px 0px #2f6627;
+  background-color: #b9facf;
+  border: 1px solid #18ab29;
+  display: inline-block;
+  cursor: pointer;
+  color: black;
+  font-family: Arial;
+  font-size: 1rem;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #2f6627;
   height: 100%;
 }
 .enviar:hover {
-	background-color:#5cbf2a;
+  background-color: #5cbf2a;
 }
 .enviar:active {
-	position:relative;
+  position: relative;
 }
 
-        
-
-@media screen and (max-width: 750px){
+@media screen and (max-width: 750px) {
   .classGrid3 {
     display: grid;
     grid-template-columns: 1fr;

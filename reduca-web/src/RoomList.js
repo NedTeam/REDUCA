@@ -1,7 +1,7 @@
 import React from "react";
 import logoEduco from "./logo-educo.png";
 import firebase from "firebase";
-
+import Calendar from "react-calendar";
 import { Link } from "react-router-dom";
 
 const rooms = {
@@ -143,37 +143,53 @@ export default ({ user, setUser }) => {
               height: "20vh"
             }}
           >
-            <p>1</p>
+            <h4
+              style={{
+                textAlign: "center",
+                marginBottom: "1em",
+                marginTop: "1em"
+              }}
+            >
+              Calendar
+            </h4>
+            <Calendar />
           </div>
           <div
             style={{
               padding: "0.5em",
               backgroundColor: "white",
               width: "100%",
-              height: "20vh"
+              height: "60vh"
             }}
           >
-            <p>2</p>
-          </div>
-          <div
-            style={{
-              padding: "0.5em",
-              backgroundColor: "#EFEFEF",
-              width: "100%",
-              height: "20vh"
-            }}
-          >
-            <p>3</p>
-          </div>
-          <div
-            style={{
-              padding: "0.5em",
-              backgroundColor: "white",
-              width: "100%",
-              height: "20vh"
-            }}
-          >
-            <p>4</p>
+            <h4
+              style={{
+                textAlign: "center",
+                marginBottom: "1em",
+                marginTop: "1em"
+              }}
+            >
+              Announcements
+            </h4>
+            <div class="announcementCard">
+              <p class="announcementDate">12/03/20</p>
+              <p style={{ padding: "5px", fontSize: "16px" }}>
+                Campus closed due to COVID 19. Lectures will continue remotely
+                via E-DUCO platform.
+              </p>
+            </div>
+            <div class="announcementCard">
+              <p class="announcementDate">06/03/20</p>
+              <p style={{ padding: "5px", fontSize: "16px" }}>
+                Start of the spring semester.
+              </p>
+            </div>
+            <div class="announcementCard">
+              <p class="announcementDate">16/02/20</p>
+              <p style={{ padding: "5px", fontSize: "16px" }}>
+                New e-learning platform available.
+              </p>
+            </div>
           </div>
         </div>
       </div>
