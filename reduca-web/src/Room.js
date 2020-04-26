@@ -42,7 +42,7 @@ export default ({
   const video1 = useRef();
   const video2 = useRef();
   const [ userMuted, setUserMuted ] = useState(false);
-  const [ faceMuted, setFaceMuted ] = useState(false);
+  const [ faceMuted, setFaceMuted ] = useState(0);
   const [ user_data, setUserData ] = useState([]);
   const [ chat_history, setChatHistory ] = useState([]);
   const [ transcript_history, setTranscriptHistory ] = useState([]);
@@ -63,7 +63,7 @@ export default ({
   }, [ db, room_name ]);
   useEffect(() => {
     const track = stream && stream.getAudioTracks()[0];
-    let mute = (userMuted && faceMuted);
+    let mute = (userMuted && faceMuted > 10);
     if(track) track.enabled = mute
   }, [faceMuted, stream, userMuted]);
   const readMessage = data => {
@@ -150,7 +150,7 @@ export default ({
     setInterval(async () => {
       const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
       if(detections.length){
-        setFaceMuted(true)
+        setFaceMuted(prev => Math.min(prev + 1, 20))
         const expressions = detections[0].expressions;
         // debugger;
         setUserData(prev_data => ({
@@ -159,7 +159,7 @@ export default ({
         }));
       } else {
         // console.log("No hay cara")
-        setFaceMuted(false)
+        setFaceMuted(prev => Math.max(prev -1, 0))
       }
     }, 200)
   };
@@ -309,7 +309,7 @@ export default ({
               </div>
             </div>
             <div className= "flexCenter boton" onClick={e => setUserMuted(m => !m)}>
-                <i class="fas fa-microphone-alt" style={{color: !video_connected || !(userMuted && faceMuted) ? 'black' : 'red', fontSize: '1.5em'}}></i>
+                <i class="fas fa-microphone-alt" style={{color: !video_connected || !(userMuted && faceMuted > 10) ? 'black' : 'red', fontSize: '1.5em'}}></i>
             </div>
             <div className= "flexCenter boton">
                 <i class="fas fa-external-link-alt" style={{color: 'black', fontSize: '1.5em'}}></i>
