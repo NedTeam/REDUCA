@@ -1,7 +1,6 @@
 import React from 'react';
 
 function setIcon(score) {
-	console.log('Score: '+score)
 	switch (true) {
 		case (score<20):
 			return <i class="fas fa-angry"></i>
