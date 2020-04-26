@@ -5,7 +5,6 @@ function setIcon(score) {
 		case (score<20):
 			return <i class="fas fa-angry"></i>
 		case (score<40):
-			console.log('aaaa')
 			return <i class="fas fa-tired"></i>
 		case (score<60):
 			return <i class="fas fa-meh"></i>
