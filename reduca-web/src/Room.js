@@ -5,12 +5,15 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-
+ 
+import * as faceapi from 'face-api.js'
 import { Link, useParams } from 'react-router-dom';
 import Analysis from "./Analysis";
 import TranscriptHistory from "./TranscriptHistory";
 import User from "./User";
 import Chat from "./Chat";
+
+const colors = ['red', 'green', 'blue'];
 
 const servers = {iceServers: [
   {urls: 'stun:stun.services.mozilla.com'},
@@ -39,6 +42,8 @@ export default ({
   const { room_id } = useParams();
   const video1 = useRef();
   const video2 = useRef();
+  const [ muted, setMuted ] = useState(false);
+  const [ user_data, setUserData ] = useState([]);
   const [ chat_history, setChatHistory ] = useState([]);
   const [ transcript_history, setTranscriptHistory ] = useState([]);
   const [ sender, setSender ] = useState();
@@ -56,6 +61,10 @@ export default ({
       msg.delete();
     });
   }, [ db, room_name ]);
+  useEffect(() => {
+    const track = stream && stream.getAudioTracks()[0];
+    if(track) track.enabled = !muted
+  }, [muted, stream]);
   const readMessage = data => {
     const msg = JSON.parse(data.message);
     const sender = data.sender;
@@ -106,6 +115,7 @@ export default ({
 	});
       }
     }
+
     return navigator.mediaDevices.getUserMedia({audio:true, video: { width: 1280, height: 720 }})
       .then(stream => {
 	video1.current.srcObject = stream
@@ -121,6 +131,34 @@ export default ({
       });
   }
 
+  const timeout = t => new Promise(res => setTimeout(res, t))
+
+  const calculateNext = (prev_data={}, data={}) => {
+    return Object.fromEntries(Object.entries(data).map(([k,v]) => (
+      [k, ((prev_data[k] || 0)*29+v)/30]
+    )));
+  }
+  
+  const onPlay = (who, ref) => async e => {
+    await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+    await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+    await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
+    await faceapi.nets.faceExpressionNet.loadFromUri('/models');
+    const video = ref.current;
+    const displaySize = { width: video.width, height: video.height };
+    setInterval(async () => {
+      const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
+      if(detections.length){
+	const expressions = detections[0].expressions;
+	debugger;
+	setUserData(prev_data => ({
+	  ...prev_data,
+	  [who]: Object.assign({}, calculateNext(prev_data[who], expressions)),
+	}));
+      }
+    }, 100)
+  };
+  
   const disconnect = (spc=pc) => {
     sender && spc.removeTrack(sender);
     if(video1.current) video1.current.srcObject = null;
@@ -182,7 +220,7 @@ export default ({
     <div className="" style={{position: 'relative'}}>
       <div className="classGrid3">
         <div className="leftColumn" style={{height: '95vh', display: 'flex', flexDirection: 'column'}}>
-          <Analysis datosGraph={graph}></Analysis>
+          <Analysis datosGraph={Object.values(user_data).map((u,i) => ({data: u, meta: {color: colors[i]}}))}></Analysis>
 	  <div style={{overflow: 'auto'}}>
 	    {room_users.map(u => (
 	      <User 
@@ -262,11 +300,11 @@ export default ({
               }}
             >
               <div className= "flexCenter boton">
-                <i className="fa fa-video-camera" style={{color: video_connected ? 'black' : 'red', fontSize: '1.5em'}}></i>
+                <i className="fa fa-video-camera" style={{color: !video_connected ? 'black' : 'red', fontSize: '1.5em'}}></i>
               </div>
             </div>
-            <div className= "flexCenter boton">
-                <i class="fas fa-microphone-alt" style={{color: video_connected ? 'black' : 'red', fontSize: '1.5em'}}></i>
+            <div className= "flexCenter boton" onClick={e => setMuted(m => !m)}>
+                <i class="fas fa-microphone-alt" style={{color: !video_connected || !muted ? 'black' : 'red', fontSize: '1.5em'}}></i>
             </div>
             <div className= "flexCenter boton">
                 <i class="fas fa-external-link-alt" style={{color: 'black', fontSize: '1.5em'}}></i>
@@ -277,8 +315,8 @@ export default ({
           </div>
            
           <div id="videos">
-            <video style={{ width: '100%'}} className='video' autoplay muted ref={video1}/>
-            <video style={{ width: '100%'}} className='video' autoplay ref={video2}/>
+            <video style={{ width: '100%'}} className='video' autoPlay muted ref={video1} onPlay={onPlay('own', video1)}/>
+            <video style={{ width: '100%'}} className='video' autoPlay ref={video2} onPlay={onPlay('other', video2)}/>
           </div>
 	        <Chat db={db} user={user} room_id={room_id} onDataLoad={setChatHistory}/>
         </div>
