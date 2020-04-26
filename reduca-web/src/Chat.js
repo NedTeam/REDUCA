@@ -48,12 +48,17 @@ const Chat = ({ db, room_id, user, onDataLoad }) => {
             padding: '0.3em',
             border: '1px solid grey',
             borderRadius: '3px',
-            alignItems: 'center',
             backgroundColor: 'lightgrey',
+            display:'flex',
+            flexDirection:'column'
           }}>
+          <div style={{
+            margin: '0.3em',
+            display: 'flex'}}>
+            <TextToSpeech text={m.text}/>
+            {m.score != null && <Score score={m.score}/>}
+          </div>
           <span style={{flex: 1}}>{m.text}</span>
-          <TextToSpeech text={m.text}/>
-          {m.score != null && <Score score={m.score}/>}
         </div>
         ))}
       </div>

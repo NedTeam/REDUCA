@@ -112,6 +112,10 @@
   overflow: auto;
 }
 
+#video {
+  height: calc(100% * 1.75);
+}
+
 body,html {
   margin: 0;
   padding: 0;

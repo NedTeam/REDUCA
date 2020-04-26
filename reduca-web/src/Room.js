@@ -106,7 +106,7 @@ export default ({
 	});
       }
     }
-    return navigator.mediaDevices.getUserMedia({audio:true, video:true})
+    return navigator.mediaDevices.getUserMedia({audio:true, video: { width: 1280, height: 720 }})
       .then(stream => {
 	video1.current.srcObject = stream
 	video1.current.play();
@@ -269,8 +269,8 @@ export default ({
           </div>
            
           <div id="videos">
-            <video style={{ border: '1px solid black', width: '100%', height: '10.6rem'}} autoplay muted ref={video1}/>
-            <video style={{ border: '1px solid black', width: '100%', height: '10.6rem'}} autoplay ref={video2}/>
+            <video style={{ border: '1px solid black', width: '100%'}} autoplay muted ref={video1}/>
+            <video style={{ border: '1px solid black', width: '100%'}} autoplay ref={video2}/>
           </div>
 	        <Chat db={db} user={user} room_id={room_id} onDataLoad={setChatHistory}/>
         </div>
